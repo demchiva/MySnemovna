@@ -1,5 +1,6 @@
 package cz.my.snemovna.service.loader;
 
+import cz.my.snemovna.service.UrlUtils;
 import cz.my.snemovna.service.parsers.votes.VotesAgendaParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

@@ -37,6 +37,7 @@ dependencies {
 	implementation 'org.hibernate.validator:hibernate-validator'
 	implementation 'org.flywaydb:flyway-core:9.15.1'
 	implementation 'com.google.firebase:firebase-admin:9.1.1'
+	implementation 'org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.0_spec:1.0.1.Final'
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'

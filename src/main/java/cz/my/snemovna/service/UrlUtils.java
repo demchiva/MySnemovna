@@ -1,4 +1,4 @@
-package cz.my.snemovna.service.loader;
+package cz.my.snemovna.service;
 
 import org.springframework.stereotype.Service;
 
@@ -18,5 +18,13 @@ public class UrlUtils {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public String getVoteUrl(final Long voteId) {
+        return String.format("https://www.psp.cz/sqw/hlasy.sqw?g=%s&l=cz", voteId);
+    }
+
+    public String getMemberPhotoUrl(final int year, final Long memberId) {
+        return String.format("https://www.psp.cz/eknih/cdrom/%sps/eknih/%sps/poslanci/i%s.jpg", year, year, memberId);
     }
 }
