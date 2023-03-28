@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 /**
- * The service for manages members agenda.
+ * The service for manage members agenda.
  */
 public interface IMembersService {
 
@@ -18,9 +18,9 @@ public interface IMembersService {
      * The method get members list.
      * @param search param for fulltext search in results. If null no search applied.
      * @param page the page
-     * @return the members list.
+     * @return the members page.
      */
-    Page<MemberDto> getMembersList(String search, Pageable page);
+    Page<MemberDto> getMembers(String search, Pageable page);
 
     /**
      * The method get the full name with titles of person.

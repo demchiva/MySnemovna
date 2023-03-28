@@ -9,16 +9,16 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 /**
- * The service for manages votes agenda.
+ * The service for manage votes agenda.
  */
 public interface IVotesService {
 
     /**
      * The method get votes list.
-     * @param pageable the page
-     * @return voter list.
+     * @param pageable the page.
+     * @return the votes page.
      */
-    Page<VoteDto> getVotesList(Pageable pageable);
+    Page<VoteDto> getVotes(Pageable pageable);
 
     /**
      * The method get vote detail.

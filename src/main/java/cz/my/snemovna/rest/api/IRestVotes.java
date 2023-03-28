@@ -15,7 +15,7 @@ import javax.ws.rs.Produces;
 import java.util.List;
 
 /**
- * The endpoint for manage votes agenda.
+ * The class for manage votes agenda.
  */
 @Path("/api/v1/votes")
 @Consumes(MediaType.APPLICATION_JSON_VALUE)
@@ -25,11 +25,11 @@ public interface IRestVotes {
     /**
      * Get the votes for votes listing.
      * @param page the page
-     * @return the votes list.
+     * @return the votes page.
      */
     @GET
     @Path("/")
-    Page<VoteDto> getVotesList(Pageable page);
+    Page<VoteDto> getVotes(Pageable page);
 
     /**
      * Get vote detail.

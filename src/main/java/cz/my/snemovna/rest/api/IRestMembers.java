@@ -17,7 +17,7 @@ import javax.ws.rs.QueryParam;
 import java.util.List;
 
 /**
- * The endpoint for manage members agenda.
+ * The class for manage members agenda.
  */
 @Path("/api/v1/members")
 @Consumes(MediaType.APPLICATION_JSON_VALUE)
@@ -28,11 +28,11 @@ public interface IRestMembers {
      * Get the members for members listing.
      * @param page the page.
      * @param search param for fulltext search in results. If null no search applied.
-     * @return the members list.
+     * @return the members page.
      */
     @GET
     @Path("/")
-    Page<MemberDto> getMembersList(@QueryParam("search") @Nullable String search, Pageable page);
+    Page<MemberDto> getMembers(@QueryParam("search") @Nullable String search, Pageable page);
 
     /**
      * Get member detail.

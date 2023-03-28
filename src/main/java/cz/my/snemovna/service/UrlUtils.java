@@ -27,4 +27,8 @@ public class UrlUtils {
     public String getMemberPhotoUrl(final int year, final Long memberId) {
         return String.format("https://www.psp.cz/eknih/cdrom/%sps/eknih/%sps/poslanci/i%s.jpg", year, year, memberId);
     }
+
+    public String getPspMemberUrl(final Long memberId) {
+        return String.format("https://www.psp.cz/sqw/detail.sqw?id=%s", memberId);
+    }
 }

@@ -11,4 +11,7 @@ public interface MemberVotesRepository extends JpaRepository<MemberVotes, Member
 
     @Query("select mv from MemberVotes mv where mv.memberId.voteId = :voteId")
     List<MemberVotes> findByVotesId(@Param("voteId") Long voteId);
+
+    @Query("select mv from MemberVotes mv where mv.memberId.memberId = :memberId")
+    List<MemberVotes> findByMemberId(@Param("memberId") Long memberId);
 }

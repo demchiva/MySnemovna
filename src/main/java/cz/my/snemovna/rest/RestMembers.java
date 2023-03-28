@@ -28,8 +28,8 @@ public class RestMembers implements IRestMembers {
 
     @GetMapping("")
     @Override
-    public Page<MemberDto> getMembersList(@RequestParam("search") @Nullable String search, @RequestBody Pageable page) {
-        return membersService.getMembersList(search, page);
+    public Page<MemberDto> getMembers(@RequestParam("search") @Nullable String search, @RequestBody Pageable page) {
+        return membersService.getMembers(search, page);
     }
 
     @GetMapping("/{memberId}")

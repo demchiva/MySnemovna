@@ -38,12 +38,13 @@ public class VotesService implements IVotesService {
     private final IMembersService membersService;
 
     @Override
-    public Page<VoteDto> getVotesList(@NotNull Pageable pageable) {
+    public Page<VoteDto> getVotes(@NotNull final Pageable pageable) {
         return voteRepository.findAll(pageable).map(this::convertVoteToDto);
     }
 
     private VoteDto convertVoteToDto(final Vote vote) {
         return new VoteDto(
+                vote.getId(),
                 vote.getResult(),
                 vote.getShortName(),
                 vote.getAye(),
@@ -54,12 +55,13 @@ public class VotesService implements IVotesService {
     }
 
     @Override
-    public VoteDetailDto getVote(@NotNull Long voteId) {
+    public VoteDetailDto getVote(@NotNull final Long voteId) {
         return voteRepository.findById(voteId).map(this::convertVoteToDetailDto).orElseThrow();
     }
 
     private VoteDetailDto convertVoteToDetailDto(final Vote vote) {
         return new VoteDetailDto(
+                vote.getId(),
                 vote.getResult(),
                 vote.getShortName(),
                 vote.getAye(),
@@ -75,7 +77,7 @@ public class VotesService implements IVotesService {
     }
 
     @Override
-    public List<VoteMembersDto> getMembers(@NotNull Long voteId) {
+    public List<VoteMembersDto> getMembers(@NotNull final Long voteId) {
        return new MemberDtoCreator(voteId).createMemberDtos();
     }
 

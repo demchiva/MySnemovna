@@ -6,9 +6,13 @@ import cz.my.snemovna.dto.members.MemberVotesDto;
 import cz.my.snemovna.jpa.model.members.Organ;
 import cz.my.snemovna.jpa.model.members.ParliamentMember;
 import cz.my.snemovna.jpa.model.members.Person;
+import cz.my.snemovna.jpa.model.votes.MemberVotes;
+import cz.my.snemovna.jpa.model.votes.Vote;
 import cz.my.snemovna.jpa.repository.members.OrganRepository;
 import cz.my.snemovna.jpa.repository.members.ParliamentMemberRepository;
 import cz.my.snemovna.jpa.repository.members.PersonRepository;
+import cz.my.snemovna.jpa.repository.votes.MemberVotesRepository;
+import cz.my.snemovna.jpa.repository.votes.VoteRepository;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,10 +34,13 @@ public class MembersService implements IMembersService {
     private final ParliamentMemberRepository memberRepository;
     private final PersonRepository personRepository;
     private final OrganRepository organRepository;
+    private final MemberVotesRepository memberVotesRepository;
+    private final VoteRepository voteRepository;
+    private final UrlUtils urlUtils;
 
     // TODO retrieve from db could be optimized. Retrieve only important fields, not all!!
     @Override
-    public Page<MemberDto> getMembersList(@Nullable final String search, @NotNull final Pageable page) {
+    public Page<MemberDto> getMembers(@Nullable final String search, @NotNull final Pageable page) {
         final Page<ParliamentMember> members = getMembersListInternal(search, page);
         final Map<Long, Person> persons = personRepository
                 .findAllById(members.stream().map(ParliamentMember::getPersonId).toList())
@@ -101,11 +109,50 @@ public class MembersService implements IMembersService {
 
     @Override
     public MemberDetailDto getMember(@NotNull final Long memberId) {
-        return null;
+        final ParliamentMember member = memberRepository.findById(memberId).orElseThrow();
+        final Person person = personRepository.findById(member.getPersonId()).orElseThrow();
+        final Organ party = organRepository.findById(member.getPartyId()).orElseThrow();
+        final Organ region = organRepository.findById(member.getRegionId()).orElseThrow();
+        final Organ period = organRepository.findById(member.getPeriodId()).orElseThrow();
+        return new MemberDetailDto(
+                memberId,
+                getFullNameWithTitles(person),
+                party.getShortName(),
+                region.getShortName(),
+                period.getDateFrom(),
+                period.getDateTo(),
+                new MemberDetailDto.OfficeAddress(
+                        member.getStreet(),
+                        member.getMunicipality(),
+                        member.getZip(),
+                        member.getPhone()
+                ),
+                member.getWeb(),
+                member.getFacebook(),
+                urlUtils.getPspMemberUrl(memberId),
+                member.getEmail(),
+                person.getBirthdate()
+        );
     }
 
     @Override
     public List<MemberVotesDto> getVotes(@NotNull final Long memberId) {
-        return null;
+        final List<MemberVotes> memberVotes = memberVotesRepository.findByMemberId(memberId);
+        final Map<Long, Vote> votes = voteRepository
+                .findAllById(memberVotes.stream().map(e -> e.getMemberId().getVoteId()).toList())
+                .stream()
+                .collect(Collectors.toMap(Vote::getId, Function.identity()));
+        return memberVotes
+                .stream()
+                .map(e -> createMemberVotesDto(e, votes.get(e.getMemberId().getVoteId())))
+                .toList();
+    }
+
+    private MemberVotesDto createMemberVotesDto(MemberVotes memberVotes, Vote vote) {
+        return new MemberVotesDto(
+                vote.getShortName(),
+                LocalDateTime.of(vote.getDate(), vote.getTime()),
+                memberVotes.getResult()
+        );
     }
 }

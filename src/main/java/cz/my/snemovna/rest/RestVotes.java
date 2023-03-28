@@ -26,8 +26,8 @@ public class RestVotes implements IRestVotes {
 
     @GetMapping("")
     @Override
-    public Page<VoteDto> getVotesList(@RequestBody Pageable page) {
-        return votesService.getVotesList(page);
+    public Page<VoteDto> getVotes(@RequestBody Pageable page) {
+        return votesService.getVotes(page);
     }
 
     @GetMapping("/{voteId}")
