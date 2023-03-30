@@ -1,30 +1,36 @@
 package cz.my.snemovna.service.parsers.meetings;
 
 import cz.my.snemovna.jpa.model.meetings.MeetingState;
-import cz.my.snemovna.jpa.repository.meetings.MeetingStateRepository;
 import cz.my.snemovna.service.parsers.AbstractSourceParser;
 import cz.my.snemovna.service.parsers.AgendaSource;
+import jakarta.persistence.EntityManager;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class MeetingStateParser extends AbstractSourceParser<MeetingState, Long> {
+public class MeetingStateParser extends AbstractSourceParser<MeetingState> {
 
-    public MeetingStateParser(MeetingStateRepository repository) {
-        super(repository);
+    public MeetingStateParser(final JdbcTemplate jdbcTemplate, final EntityManager entityManager) {
+        super(MeetingState.class, jdbcTemplate, entityManager);
     }
 
     @Override
-    protected MeetingState convert(List<String> sourceData) {
-        final MeetingState meetingState = new MeetingState();
-        meetingState.setMeetingId(Long.parseLong(sourceData.get(0)));
-        meetingState.setState(safeParseToInteger(sourceData.get(1)));
-        meetingState.setType(safeParseToInteger(sourceData.get(2)));
-        meetingState.setMeetingBeginText(sourceData.get(3));
-        meetingState.setMeetingStatusText(sourceData.get(4));
-        meetingState.setMeetingStatusText2(sourceData.get(5));
-        return meetingState;
+    protected String getColumnsOrder() {
+        return "meeting_id,state,type,meeting_begin_text,meeting_status_text,meeting_status_text_2";
+    }
+
+    @Override
+    protected Object[] convert(List<String> sourceData) {
+        return new Object[] {
+                Long.parseLong(sourceData.get(0)),
+                safeParseToInteger(sourceData.get(1)),
+                safeParseToInteger(sourceData.get(2)),
+                sourceData.get(3),
+                sourceData.get(4),
+                sourceData.get(5)
+        };
     }
 
     @Override

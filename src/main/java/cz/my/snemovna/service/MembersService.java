@@ -80,9 +80,10 @@ public class MembersService implements IMembersService {
                                       final Organ region, final Organ period) {
         return new MemberDto(
                 memberId,
+                getPhotoUrl(period.getDateFrom().getYear(), person.getId()),
                 getFullNameWithTitles(person),
-                party.getShortName(),
-                region.getShortName(),
+                party != null ? party.getNameCz() : null,
+                region != null ? region.getNameCz() : null,
                 period.getDateFrom(),
                 period.getDateTo()
         );
@@ -111,14 +112,17 @@ public class MembersService implements IMembersService {
     public MemberDetailDto getMember(@NotNull final Long memberId) {
         final ParliamentMember member = memberRepository.findById(memberId).orElseThrow();
         final Person person = personRepository.findById(member.getPersonId()).orElseThrow();
-        final Organ party = organRepository.findById(member.getPartyId()).orElseThrow();
-        final Organ region = organRepository.findById(member.getRegionId()).orElseThrow();
+        final Organ party = member.getPartyId() != null
+                ? organRepository.findById(member.getPartyId()).orElse(null)
+                : null;
+        final Organ region = organRepository.findById(member.getRegionId()).orElse(null);
         final Organ period = organRepository.findById(member.getPeriodId()).orElseThrow();
         return new MemberDetailDto(
                 memberId,
+                getPhotoUrl(period.getDateFrom().getYear(), person.getId()),
                 getFullNameWithTitles(person),
-                party.getShortName(),
-                region.getShortName(),
+                party != null ? party.getNameCz() : null,
+                region != null ? region.getNameCz() : null,
                 period.getDateFrom(),
                 period.getDateTo(),
                 new MemberDetailDto.OfficeAddress(
@@ -129,7 +133,7 @@ public class MembersService implements IMembersService {
                 ),
                 member.getWeb(),
                 member.getFacebook(),
-                urlUtils.getPspMemberUrl(memberId),
+                urlUtils.getPspMemberUrl(person.getId()),
                 member.getEmail(),
                 person.getBirthdate()
         );
@@ -154,5 +158,9 @@ public class MembersService implements IMembersService {
                 LocalDateTime.of(vote.getDate(), vote.getTime()),
                 memberVotes.getResult()
         );
+    }
+
+    private String getPhotoUrl(final int year, final Long personId) {
+        return urlUtils.getMemberPhotoUrl(year, personId);
     }
 }

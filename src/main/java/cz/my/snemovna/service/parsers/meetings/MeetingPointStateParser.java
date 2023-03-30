@@ -1,26 +1,35 @@
 package cz.my.snemovna.service.parsers.meetings;
 
 import cz.my.snemovna.jpa.model.meetings.MeetingPointState;
-import cz.my.snemovna.jpa.repository.meetings.MeetingPointStateRepository;
 import cz.my.snemovna.service.parsers.AbstractSourceParser;
 import cz.my.snemovna.service.parsers.AgendaSource;
+import jakarta.persistence.EntityManager;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class MeetingPointStateParser extends AbstractSourceParser<MeetingPointState, Long> {
+public class MeetingPointStateParser extends AbstractSourceParser<MeetingPointState> {
 
-    public MeetingPointStateParser(MeetingPointStateRepository repository) {
-        super(repository);
+    public MeetingPointStateParser(final JdbcTemplate jdbcTemplate, final EntityManager entityManager) {
+        super(MeetingPointState.class, jdbcTemplate, entityManager);
     }
 
     @Override
-    protected MeetingPointState convert(List<String> sourceData) {
+    protected String getColumnsOrder() {
+        return "id,description";
+    }
+
+    @Override
+    protected Object[] convert(List<String> sourceData) {
         final MeetingPointState meetingPointState = new MeetingPointState();
         meetingPointState.setId(Long.parseLong(sourceData.get(0)));
         meetingPointState.setDescription(sourceData.get(1));
-        return meetingPointState;
+        return new Object[]{
+            Long.parseLong(sourceData.get(0)),
+            sourceData.get(1)
+        };
     }
 
     @Override

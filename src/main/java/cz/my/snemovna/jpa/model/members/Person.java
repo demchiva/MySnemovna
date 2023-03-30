@@ -36,7 +36,7 @@ public class Person implements Serializable {
     @Column(name = "sex", length = 1)
     private String sex;
 
-    @Column(name = "updatedAt")
+    @Column(name = "updated_at")
     private LocalDate updatedAt;
 
     @Column(name = "date_of_death")

@@ -3,9 +3,9 @@ package cz.my.snemovna.rest.api;
 import cz.my.snemovna.dto.members.MemberDetailDto;
 import cz.my.snemovna.dto.members.MemberDto;
 import cz.my.snemovna.dto.members.MemberVotesDto;
+import cz.my.snemovna.rest.PageApiRequest;
 import jakarta.annotation.Nullable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 
 import javax.ws.rs.Consumes;
@@ -32,7 +32,7 @@ public interface IRestMembers {
      */
     @GET
     @Path("/")
-    Page<MemberDto> getMembers(@QueryParam("search") @Nullable String search, Pageable page);
+    Page<MemberDto> getMembers(@QueryParam("search") @Nullable String search, PageApiRequest page);
 
     /**
      * Get member detail.

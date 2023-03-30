@@ -9,7 +9,7 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,19 +28,21 @@ public class RestMembers implements IRestMembers {
 
     @GetMapping("")
     @Override
-    public Page<MemberDto> getMembers(@RequestParam("search") @Nullable String search, @RequestBody Pageable page) {
-        return membersService.getMembers(search, page);
+    public Page<MemberDto> getMembers(@RequestParam("search") @Nullable final String search,
+                                      @RequestBody final PageApiRequest page) {
+        return membersService.getMembers(search, PageRequest.of(page.getPage(), page.getSize(),
+                page.getDirection(), page.getProperty()));
     }
 
     @GetMapping("/{memberId}")
     @Override
-    public MemberDetailDto getMember(@PathVariable("memberId") @NotNull Long memberId) {
+    public MemberDetailDto getMember(@PathVariable("memberId") @NotNull final Long memberId) {
         return membersService.getMember(memberId);
     }
 
     @GetMapping("/{memberId}/votes")
     @Override
-    public List<MemberVotesDto> getVotes(@PathVariable("memberId") @NotNull Long memberId) {
+    public List<MemberVotesDto> getVotes(@PathVariable("memberId") @NotNull final Long memberId) {
         return membersService.getVotes(memberId);
     }
 }

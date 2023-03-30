@@ -22,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
 public class MeetingsService implements IMeetingsService {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy");
+    private static final DateTimeFormatter FORMATTER_HOURS = DateTimeFormatter.ofPattern("yyyy-MM-dd HH");
 
     private static final List<Tuple<List<Integer>, String>> MEETING_POINT_TYPES = List.of(
             Tuple.of(List.of(1, 7, 15, 17, 18, 40, 41), "1. ètení"),
@@ -71,8 +73,8 @@ public class MeetingsService implements IMeetingsService {
                 getDate(meeting, state),
                 state != null ? state.getType() : null,
                 organ.getShortName(),
-                meeting.getDateFrom(),
-                meeting.getDateTo()
+                safeParseDateWithHours(meeting.getDateFrom()),
+                safeParseDateWithHours(meeting.getDateTo())
         );
     }
 
@@ -83,21 +85,23 @@ public class MeetingsService implements IMeetingsService {
     }
 
     private String getDateFromMeeting(final Meeting meeting) {
-        if (meeting.getDateTo() == null) {
-            return meeting.getDateFrom().format(DATE_FORMAT);
+        if (meeting.getDateTo() == null || meeting.getDateTo().isEmpty()) {
+            return safeParseDateWithHours(meeting.getDateFrom()).format(DATE_FORMAT);
         }
 
-        return meeting.getDateFrom().format(DATE_FORMAT) + " - " + meeting.getDateTo().format(DATE_FORMAT);
+        return safeParseDateWithHours(meeting.getDateFrom()).format(DATE_FORMAT)
+                + " - "
+                + safeParseDateWithHours(meeting.getDateTo()).format(DATE_FORMAT);
     }
 
     @Override
     public MeetingDetailDto getMeeting(@NotNull final Long meetingId, @NotNull final MeetingAgendaType type) {
         final List<MeetingPoint> meetingPoints =
-                meetingPointRepository.findAllById(List.of(new MeetingAgendaId(meetingId, type.getType())));
+                meetingPointRepository.findByMeetingIdAndAgendaType(meetingId, type.getType());
         final Map<Long, MeetingPointState> states = meetingPointStateRepository
                 .findAllById(meetingPoints.stream().map(MeetingPoint::getStateId).toList())
                 .stream()
-                .collect(Collectors.toMap(MeetingPointState::getId, Function.identity()));
+                .collect(Collectors.toMap(MeetingPointState::getId, Function.identity(), (a, b) -> b));
 
         return new MeetingDetailDto(
                 meetingPoints
@@ -122,5 +126,9 @@ public class MeetingsService implements IMeetingsService {
                 .map(Tuple::y)
                 .findFirst()
                 .orElse(null);
+    }
+
+    protected LocalDateTime safeParseDateWithHours(String value) {
+        return value == null || value.isEmpty() ? null : LocalDateTime.parse(value, FORMATTER_HOURS);
     }
 }

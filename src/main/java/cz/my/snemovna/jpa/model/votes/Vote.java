@@ -66,7 +66,4 @@ public class Vote implements Serializable {
 
     @Column(name = "short_name")
     private String shortName;
-
-    @Column(name = "confused")
-    private Boolean isConfused;
 }

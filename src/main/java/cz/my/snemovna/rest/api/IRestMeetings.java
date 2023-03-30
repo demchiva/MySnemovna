@@ -3,8 +3,8 @@ package cz.my.snemovna.rest.api;
 import cz.my.snemovna.dto.meetings.MeetingAgendaType;
 import cz.my.snemovna.dto.meetings.MeetingDetailDto;
 import cz.my.snemovna.dto.meetings.MeetingDto;
+import cz.my.snemovna.rest.PageApiRequest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 
 import javax.ws.rs.Consumes;
@@ -29,7 +29,7 @@ public interface IRestMeetings {
      */
     @GET
     @Path("/")
-    Page<MeetingDto> getMeetings(Pageable page);
+    Page<MeetingDto> getMeetings(PageApiRequest page);
 
     /**
      * Get meeting detail.

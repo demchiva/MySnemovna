@@ -1,30 +1,35 @@
 package cz.my.snemovna.service.parsers.members;
 
 import cz.my.snemovna.jpa.model.members.PersonExtra;
-import cz.my.snemovna.jpa.repository.members.PersonExtraRepository;
 import cz.my.snemovna.service.parsers.AbstractSourceParser;
 import cz.my.snemovna.service.parsers.AgendaSource;
-import org.springframework.stereotype.Component;
+import jakarta.persistence.EntityManager;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
-@Component
-public class PersonExtraParser extends AbstractSourceParser<PersonExtra, Long> {
+//@Component
+public class PersonExtraParser extends AbstractSourceParser<PersonExtra> {
 
-    public PersonExtraParser(PersonExtraRepository repository) {
-        super(repository);
+    public PersonExtraParser(final JdbcTemplate jdbcTemplate, final EntityManager entityManager) {
+        super(PersonExtra.class, jdbcTemplate, entityManager);
     }
 
     @Override
-    protected PersonExtra convert(List<String> sourceData) {
-        final PersonExtra personExtra = new PersonExtra();
-        personExtra.setPersonId(Long.parseLong(sourceData.get(0)));
-        personExtra.setOrganId(safeParseToLong(sourceData.get(1)));
-        personExtra.setType(safeParseToInteger(sourceData.get(2)));
-        personExtra.setDistrict(safeParseToLong(sourceData.get(3)));
-        personExtra.setParty(sourceData.get(4));
-        personExtra.setExternalId(safeParseToLong(sourceData.get(5)));
-        return personExtra;
+    protected String getColumnsOrder() {
+        return "person_id,organ_id,type,district,party,external_id";
+    }
+
+    @Override
+    protected Object[] convert(List<String> sourceData) {
+        return new Object[] {
+                Long.parseLong(sourceData.get(0)),
+                safeParseToLong(sourceData.get(1)),
+                safeParseToInteger(sourceData.get(2)),
+                safeParseToLong(sourceData.get(3)),
+                sourceData.get(4),
+                safeParseToLong(sourceData.get(5))
+        };
     }
 
     @Override

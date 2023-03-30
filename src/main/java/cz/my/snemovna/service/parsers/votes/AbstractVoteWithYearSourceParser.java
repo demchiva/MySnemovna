@@ -1,12 +1,15 @@
 package cz.my.snemovna.service.parsers.votes;
 
 import cz.my.snemovna.service.parsers.AbstractSourceParser;
-import org.springframework.data.jpa.repository.JpaRepository;
+import jakarta.persistence.EntityManager;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-public abstract class AbstractVoteWithYearSourceParser<T, E> extends AbstractSourceParser<T, E> {
+public abstract class AbstractVoteWithYearSourceParser<T> extends AbstractSourceParser<T> {
 
-    public AbstractVoteWithYearSourceParser(JpaRepository<T, E> repository) {
-        super(repository);
+    protected AbstractVoteWithYearSourceParser(final Class<T> type,
+                                               final JdbcTemplate jdbcTemplate,
+                                               final EntityManager entityManager) {
+        super(type, jdbcTemplate, entityManager);
     }
 
     /**

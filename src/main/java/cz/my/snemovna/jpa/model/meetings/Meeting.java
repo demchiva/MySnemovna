@@ -7,7 +7,6 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "meeting")
@@ -24,11 +23,11 @@ public class Meeting implements Serializable {
     private Long meetingNumber;
 
     @Column(name = "date_from")
-    private LocalDateTime dateFrom;
+    private String dateFrom;
 
     @Column(name = "date_to")
-    private LocalDateTime dateTo;
+    private String dateTo;
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private String updatedAt;
 }

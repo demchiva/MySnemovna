@@ -123,13 +123,13 @@ public class VotesService implements IVotesService {
             return new VoteMembersDto(
                     membersService.getFullNameWithTitles(person),
                     party.getShortName(),
-                    member.isPhoto() ? getPhotoUrl(period.getDateFrom().getYear(), member.getId()) : null,
+                    member.isPhoto() ? getPhotoUrl(period.getDateFrom().getYear(), person.getId()) : null,
                     memberVotes.getResult()
             );
         }
 
-        private String getPhotoUrl(final int year, final Long memberId) {
-            return urlUtils.getMemberPhotoUrl(year, memberId);
+        private String getPhotoUrl(final int year, final Long personId) {
+            return urlUtils.getMemberPhotoUrl(year, personId);
         }
     }
 }

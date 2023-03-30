@@ -27,10 +27,10 @@ public class MemberVotes implements Serializable {
     @NoArgsConstructor
     @Embeddable
     public static class MemberVotesId implements Serializable {
-        @Column(name = "memberId")
+        @Column(name = "member_id")
         private Long memberId;
 
-        @Column(name = "voteId")
+        @Column(name = "vote_id")
         private Long voteId;
     }
 }

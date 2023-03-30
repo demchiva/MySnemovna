@@ -1,15 +1,17 @@
 package cz.my.snemovna.service.parsers;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Table;
+import jakarta.persistence.metamodel.EntityType;
+import jakarta.persistence.metamodel.Metamodel;
 import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -19,27 +21,31 @@ import java.util.Scanner;
 import static cz.my.snemovna.service.loader.ArchiveUtils.BASE_DESTINATION;
 
 @Slf4j
-@RequiredArgsConstructor
-public abstract class AbstractSourceParser<T, E> implements SourceParser {
+public abstract class AbstractSourceParser<T> implements SourceParser {
 
-    private final static int BATCH_SIZE = 100;
-    private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    private final static DateTimeFormatter FORMATTER_HOURS = DateTimeFormatter.ofPattern("yyyy-MM-dd HH");
+    private static final int BATCH_SIZE = 100;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    protected final String tableName;
+    protected final JdbcTemplate jdbcTemplate;
 
-    protected final JpaRepository<T, E> repository;
+    protected AbstractSourceParser(final Class<T> type,
+                                   final JdbcTemplate jdbcTemplate,
+                                   final EntityManager entityManager) {
+        this.tableName = getTableName(entityManager, type);
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     @SneakyThrows
     public void parseAndSave(@NotNull final String dirName) {
         final String sourcePath = createSourcePath(dirName, getSourceName());
         try (BufferedReader reader = new BufferedReader(new FileReader(sourcePath))) {
-            List<T> items = new ArrayList<>();
+            List<Object[]> items = new ArrayList<>(BATCH_SIZE);
             String line = reader.readLine();
             while (line != null) {
-                try {
-                    Scanner s = new Scanner(line);
+                try(final Scanner s = new Scanner(line))  {
                     s.useDelimiter(UNL_COLUMN_DIVIDER);
-                    T item = convert(s.tokens().toList());
+                    Object[] item = convert(s.tokens().toList());
 
                     if (item != null) {
                         items.add(item);
@@ -50,7 +56,7 @@ public abstract class AbstractSourceParser<T, E> implements SourceParser {
 
                 line = reader.readLine();
 
-                if (items.size() >= BATCH_SIZE || (line == null && items.size() > 0)) {
+                if (items.size() >= BATCH_SIZE || (line == null && !items.isEmpty())) {
                     save(items);
                     items.clear();
                 }
@@ -63,11 +69,34 @@ public abstract class AbstractSourceParser<T, E> implements SourceParser {
         return 1;
     }
 
-    protected void save(List<T> items) {
-        repository.saveAll(items);
+    // TODO implementovat smazani dat zdb pred insertem, jinak spadne na erroru
+    protected void save(List<Object[]> items) {
+        jdbcTemplate.batchUpdate(
+                String.format(
+                        "insert into %s(%s) values (%s)",
+                        tableName, getColumnsOrder(), getQueryPlaceholder(items.get(0))),
+                items
+        );
     }
 
-    protected abstract T convert(List<String> sourceData);
+    public String getTableName(final EntityManager entityManager, final Class<T> type) {
+        final Metamodel meta = entityManager.getMetamodel();
+        final EntityType<T> entityType = meta.entity(type);
+
+        final Table t = type.getAnnotation(Table.class);
+
+        return t == null
+                ? entityType.getName().toUpperCase()
+                : t.name();
+    }
+
+    protected abstract String getColumnsOrder();
+
+    protected String getQueryPlaceholder(Object[] item) {
+        return "?" + ",?".repeat(Math.max(0, item.length - 1));
+    }
+
+    protected abstract Object[] convert(List<String> sourceData);
 
     protected String createSourcePath(final String dirName, final String sourceName) {
         return BASE_DESTINATION + dirName + "/" + sourceName + ".unl";
@@ -87,10 +116,6 @@ public abstract class AbstractSourceParser<T, E> implements SourceParser {
 
     protected LocalTime safeParseToLocalTime(String value) {
         return value == null || value.isEmpty() ? null : LocalTime.parse(value);
-    }
-
-    protected LocalDateTime safeParseDateWithHours(String value) {
-        return value == null || value.isEmpty() ? null : LocalDateTime.parse(value, FORMATTER_HOURS);
     }
 
     protected boolean safeParseToBool(String value) {

@@ -8,7 +8,7 @@ import cz.my.snemovna.service.IMeetingsService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,8 +25,9 @@ public class RestMeetings implements IRestMeetings {
 
     @GetMapping("")
     @Override
-    public Page<MeetingDto> getMeetings(@RequestBody final Pageable page) {
-        return meetingsService.getMeetings(page);
+    public Page<MeetingDto> getMeetings(@RequestBody final PageApiRequest page) {
+        return meetingsService.getMeetings(PageRequest.of(page.getPage(), page.getSize(),
+                page.getDirection(), page.getProperty()));
     }
 
     @GetMapping("/{meetingId}")

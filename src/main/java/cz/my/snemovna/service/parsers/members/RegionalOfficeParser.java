@@ -1,28 +1,34 @@
 package cz.my.snemovna.service.parsers.members;
 
 import cz.my.snemovna.jpa.model.members.RegionalOffice;
-import cz.my.snemovna.jpa.repository.members.RegionalOfficeRepository;
 import cz.my.snemovna.service.parsers.AbstractSourceParser;
 import cz.my.snemovna.service.parsers.AgendaSource;
+import jakarta.persistence.EntityManager;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class RegionalOfficeParser extends AbstractSourceParser<RegionalOffice, Long> {
+public class RegionalOfficeParser extends AbstractSourceParser<RegionalOffice> {
 
-    public RegionalOfficeParser(RegionalOfficeRepository repository) {
-        super(repository);
+    public RegionalOfficeParser(final JdbcTemplate jdbcTemplate, final EntityManager entityManager) {
+        super(RegionalOffice.class, jdbcTemplate, entityManager);
     }
 
     @Override
-    protected RegionalOffice convert(List<String> sourceData) {
-        final RegionalOffice regionalOffice = new RegionalOffice();
-        regionalOffice.setMemberId(Long.parseLong(sourceData.get(0)));
-        regionalOffice.setAddress(sourceData.get(1));
-        regionalOffice.setLatitude(sourceData.get(2));
-        regionalOffice.setLongitude(sourceData.get(3));
-        return regionalOffice;
+    protected String getColumnsOrder() {
+        return "member_id,address,latitude,longitude";
+    }
+
+    @Override
+    protected Object[] convert(List<String> sourceData) {
+        return new Object[] {
+                Long.parseLong(sourceData.get(0)),
+                sourceData.get(1),
+                sourceData.get(2),
+                sourceData.get(3)
+        };
     }
 
     @Override

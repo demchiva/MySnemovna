@@ -1,10 +1,10 @@
 package cz.my.snemovna.rest.api;
 
-import cz.my.snemovna.dto.votes.VoteMembersDto;
 import cz.my.snemovna.dto.votes.VoteDetailDto;
 import cz.my.snemovna.dto.votes.VoteDto;
+import cz.my.snemovna.dto.votes.VoteMembersDto;
+import cz.my.snemovna.rest.PageApiRequest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 
 import javax.ws.rs.Consumes;
@@ -29,7 +29,7 @@ public interface IRestVotes {
      */
     @GET
     @Path("/")
-    Page<VoteDto> getVotes(Pageable page);
+    Page<VoteDto> getVotes(PageApiRequest page);
 
     /**
      * Get vote detail.

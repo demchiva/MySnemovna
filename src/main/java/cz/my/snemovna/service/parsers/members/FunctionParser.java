@@ -1,29 +1,35 @@
 package cz.my.snemovna.service.parsers.members;
 
 import cz.my.snemovna.jpa.model.members.Function;
-import cz.my.snemovna.jpa.repository.members.FunctionRepository;
 import cz.my.snemovna.service.parsers.AbstractSourceParser;
 import cz.my.snemovna.service.parsers.AgendaSource;
+import jakarta.persistence.EntityManager;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class FunctionParser extends AbstractSourceParser<Function, Long> {
+public class FunctionParser extends AbstractSourceParser<Function> {
 
-    public FunctionParser(FunctionRepository repository) {
-        super(repository);
+    public FunctionParser(final JdbcTemplate jdbcTemplate, final EntityManager entityManager) {
+        super(Function.class, jdbcTemplate, entityManager);
     }
 
     @Override
-    protected Function convert(List<String> sourceData) {
-        final Function function = new Function();
-        function.setId(Long.parseLong(sourceData.get(0)));
-        function.setOrganId(safeParseToLong(sourceData.get(1)));
-        function.setFunctionTypeId(safeParseToLong(sourceData.get(2)));
-        function.setNameCz(sourceData.get(3));
-        function.setPriority(safeParseToInteger(sourceData.get(4)));
-        return function;
+    protected String getColumnsOrder() {
+        return "id,organ_id,function_type_id,name_cz,priority";
+    }
+
+    @Override
+    protected Object[] convert(List<String> sourceData) {
+        return new Object[] {
+                Long.parseLong(sourceData.get(0)),
+                safeParseToLong(sourceData.get(1)),
+                safeParseToLong(sourceData.get(2)),
+                sourceData.get(3),
+                safeParseToInteger(sourceData.get(4))
+        };
     }
 
     @Override

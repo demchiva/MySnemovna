@@ -24,11 +24,11 @@ public class UrlUtils {
         return String.format("https://www.psp.cz/sqw/hlasy.sqw?g=%s&l=cz", voteId);
     }
 
-    public String getMemberPhotoUrl(final int year, final Long memberId) {
-        return String.format("https://www.psp.cz/eknih/cdrom/%sps/eknih/%sps/poslanci/i%s.jpg", year, year, memberId);
+    public String getMemberPhotoUrl(final int year, final Long personId) {
+        return String.format("https://www.psp.cz/eknih/cdrom/%sps/eknih/%sps/poslanci/i%s.jpg", year, year, personId);
     }
 
-    public String getPspMemberUrl(final Long memberId) {
-        return String.format("https://www.psp.cz/sqw/detail.sqw?id=%s", memberId);
+    public String getPspMemberUrl(final Long personId) {
+        return String.format("https://www.psp.cz/sqw/detail.sqw?id=%s", personId);
     }
 }

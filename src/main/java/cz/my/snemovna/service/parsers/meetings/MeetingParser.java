@@ -1,33 +1,39 @@
 package cz.my.snemovna.service.parsers.meetings;
 
 import cz.my.snemovna.jpa.model.meetings.Meeting;
-import cz.my.snemovna.jpa.model.meetings.MeetingAgendaId;
-import cz.my.snemovna.jpa.repository.meetings.MeetingRepository;
 import cz.my.snemovna.service.parsers.AbstractSourceParser;
 import cz.my.snemovna.service.parsers.AgendaSource;
+import jakarta.persistence.EntityManager;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class MeetingParser extends AbstractSourceParser<Meeting, MeetingAgendaId> {
+public class MeetingParser extends AbstractSourceParser<Meeting> {
 
-    public MeetingParser(MeetingRepository repository) {
-        super(repository);
+    public MeetingParser(final JdbcTemplate jdbcTemplate, final EntityManager entityManager) {
+        super(Meeting.class, jdbcTemplate, entityManager);
     }
 
     @Override
-    protected Meeting convert(List<String> sourceData) {
-        final Meeting meeting = new Meeting();
+    protected String getColumnsOrder() {
+        return "id,agenda_type,organ_id,meeting_number,date_from,date_to,updated_at";
+    }
+
+    @Override
+    protected Object[] convert(List<String> sourceData) {
         Integer agendaType = safeParseToInteger(sourceData.get(6));
         agendaType = agendaType == null ? 0 : agendaType;
-        meeting.setId(new MeetingAgendaId(Long.parseLong(sourceData.get(0)), agendaType));
-        meeting.setOrganId(safeParseToLong(sourceData.get(1)));
-        meeting.setMeetingNumber(safeParseToLong(sourceData.get(2)));
-        meeting.setDateFrom(safeParseDateWithHours(sourceData.get(3)));
-        meeting.setDateTo(safeParseDateWithHours(sourceData.get(4)));
-        meeting.setUpdatedAt(safeParseDateWithHours(sourceData.get(5)));
-        return meeting;
+        return new Object[] {
+                Long.parseLong(sourceData.get(0)),
+                agendaType,
+                safeParseToLong(sourceData.get(1)),
+                safeParseToLong(sourceData.get(2)),
+                sourceData.get(3),
+                sourceData.get(4),
+                sourceData.get(5)
+        };
     }
 
     @Override
