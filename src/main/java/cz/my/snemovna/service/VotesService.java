@@ -46,7 +46,7 @@ public class VotesService implements IVotesService {
         return new VoteDto(
                 vote.getId(),
                 vote.getResult(),
-                vote.getShortName(),
+                vote.getLongName(),
                 vote.getAye(),
                 vote.getNo(),
                 vote.getAbstained(),
@@ -63,7 +63,6 @@ public class VotesService implements IVotesService {
         return new VoteDetailDto(
                 vote.getId(),
                 vote.getResult(),
-                vote.getShortName(),
                 vote.getAye(),
                 vote.getNo(),
                 vote.getAbstained(),

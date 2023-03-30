@@ -38,7 +38,12 @@ public abstract class AbstractSourceParser<T> implements SourceParser {
     @Override
     @SneakyThrows
     public void parseAndSave(@NotNull final String dirName) {
-        final String sourcePath = createSourcePath(dirName, getSourceName());
+        parseAndSave(dirName, getSourceName());
+    }
+
+    @SneakyThrows
+    protected void parseAndSave(@NotNull final String dirName, @NotNull final String sourceName) {
+        final String sourcePath = createSourcePath(dirName, sourceName);
         try (BufferedReader reader = new BufferedReader(new FileReader(sourcePath))) {
             List<Object[]> items = new ArrayList<>(BATCH_SIZE);
             String line = reader.readLine();
@@ -103,7 +108,11 @@ public abstract class AbstractSourceParser<T> implements SourceParser {
     protected abstract Object[] convert(List<String> sourceData);
 
     protected String createSourcePath(final String dirName, final String sourceName) {
-        return BASE_DESTINATION + dirName + "/" + sourceName + ".unl";
+        return getDirectoryPath(dirName) + "/" + sourceName + ".unl";
+    }
+
+    protected String getDirectoryPath(final String dirName) {
+        return BASE_DESTINATION + dirName;
     }
 
     protected Long safeParseToLong(String value) {

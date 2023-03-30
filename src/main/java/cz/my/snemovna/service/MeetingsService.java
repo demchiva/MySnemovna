@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 public class MeetingsService implements IMeetingsService {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy");
-    private static final DateTimeFormatter FORMATTER_HOURS = DateTimeFormatter.ofPattern("yyyy-MM-dd HH");
+    private static final DateTimeFormatter FORMATTER_HOURS = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     private static final List<Tuple<List<Integer>, String>> MEETING_POINT_TYPES = List.of(
             Tuple.of(List.of(1, 7, 15, 17, 18, 40, 41), "1. ètení"),
@@ -44,6 +44,8 @@ public class MeetingsService implements IMeetingsService {
             Tuple.of(List.of(14), "Vráceno Senátem"),
             Tuple.of(List.of(10), "Zkrácené jednání")
     );
+
+    private static final int MEETING_POINT_TYPES_INTERPELLATION_ANSWER = 6;
 
     private final MeetingPointRepository meetingPointRepository;
     private final MeetingPointStateRepository meetingPointStateRepository;
@@ -106,6 +108,7 @@ public class MeetingsService implements IMeetingsService {
         return new MeetingDetailDto(
                 meetingPoints
                         .stream()
+                        .filter(e -> !(MEETING_POINT_TYPES_INTERPELLATION_ANSWER == e.getTypeId()))
                         .map(e -> createPointDto(e, states.getOrDefault(e.getStateId(), null)))
                         .toList()
         );
@@ -113,7 +116,7 @@ public class MeetingsService implements IMeetingsService {
 
     private MeetingDetailDto.MeetingPointDto createPointDto(final MeetingPoint point, final MeetingPointState state) {
         return new MeetingDetailDto.MeetingPointDto(
-                point.getShortName(),
+                point.getFullName(),
                 state != null ? state.getDescription() : null,
                 getType(point)
         );

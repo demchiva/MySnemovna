@@ -6,12 +6,17 @@ import jakarta.persistence.EntityManager;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Component
-public class MemberVotesParser1 extends AbstractVoteWithYearSourceParser<MemberVotes> {
+public class MemberVotesParser extends AbstractVoteWithYearSourceParser<MemberVotes> {
 
-    public MemberVotesParser1(final JdbcTemplate jdbcTemplate, final EntityManager entityManager) {
+    private static final Pattern FILE_NAME_PATTERN = Pattern.compile("^hl\\d{4}h\\d\\.unl$");
+
+    public MemberVotesParser(final JdbcTemplate jdbcTemplate, final EntityManager entityManager) {
         super(MemberVotes.class, jdbcTemplate, entityManager);
     }
 
@@ -32,6 +37,20 @@ public class MemberVotesParser1 extends AbstractVoteWithYearSourceParser<MemberV
     @Override
     public String getSourceName() {
         return "hlXXXXh1";
+    }
+
+    @Override
+    public void parseAndSave(String dirName) {
+        final File folder = new File(getDirectoryPath(dirName));
+        final File[] listOfFiles = folder.listFiles();
+        if (listOfFiles != null) {
+            Arrays.stream(listOfFiles)
+                    .filter(File::isFile)
+                    .map(File::getName)
+                    .filter(e -> FILE_NAME_PATTERN.matcher(e).find())
+                    .map(e -> e.split("\\.")[0])
+                    .forEach(e -> parseAndSave(dirName, e));
+        }
     }
 
     @Override
