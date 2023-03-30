@@ -23,7 +23,10 @@ public abstract class AbstractAgendaParser {
                 .stream()
                 .filter(e -> getAgendaSource().equals(e.getAgendaSource()))
                 .sorted(Comparator.comparing(SourceParser::getPriority))
-                .forEach(e -> e.parseAndSave(dirName));
+                .forEach(e -> {
+                    e.delete();
+                    e.parseAndSave(dirName);
+                });
 
         stopWatch.stop();
         LOGGER.info("End parsing directory {} and filling database. Parsing took {} ms.", dirName, stopWatch.getTotalTimeMillis());

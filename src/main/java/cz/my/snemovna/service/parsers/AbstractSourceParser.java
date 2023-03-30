@@ -69,7 +69,6 @@ public abstract class AbstractSourceParser<T> implements SourceParser {
         return 1;
     }
 
-    // TODO implementovat smazani dat zdb pred insertem, jinak spadne na erroru
     protected void save(List<Object[]> items) {
         jdbcTemplate.batchUpdate(
                 String.format(
@@ -88,6 +87,11 @@ public abstract class AbstractSourceParser<T> implements SourceParser {
         return t == null
                 ? entityType.getName().toUpperCase()
                 : t.name();
+    }
+
+    @Override
+    public void delete() {
+        jdbcTemplate.execute(String.format("delete from %s", tableName));
     }
 
     protected abstract String getColumnsOrder();
