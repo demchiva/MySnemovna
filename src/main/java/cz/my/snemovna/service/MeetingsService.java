@@ -19,6 +19,7 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -37,12 +38,12 @@ public class MeetingsService implements IMeetingsService {
     private static final DateTimeFormatter FORMATTER_HOURS = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     private static final List<Tuple<List<Integer>, String>> MEETING_POINT_TYPES = List.of(
-            Tuple.of(List.of(1, 7, 15, 17, 18, 40, 41), "1. ËtenÌ"),
-            Tuple.of(List.of(2, 3, 4), "2. ËtenÌ"),
-            Tuple.of(List.of(5), "3. ËtenÌ"),
-            Tuple.of(List.of(13), "Vr·ceno prezidentem"),
-            Tuple.of(List.of(14), "Vr·ceno Sen·tem"),
-            Tuple.of(List.of(10), "Zkr·cenÈ jedn·nÌ")
+            Tuple.of(List.of(1, 7, 15, 17, 18, 40, 41), "1. ƒçten√≠"),
+            Tuple.of(List.of(2, 3, 4), "2. ƒçten√≠"),
+            Tuple.of(List.of(5), "3. ƒçten√≠"),
+            Tuple.of(List.of(13), "Vr√°ceno prezidentem"),
+            Tuple.of(List.of(14), "Vr√°ceno Sen√°tem"),
+            Tuple.of(List.of(10), "Zkr√°cen√© jedn√°n√≠")
     );
 
     private static final int MEETING_POINT_TYPES_INTERPELLATION_ANSWER = 6;
@@ -54,8 +55,8 @@ public class MeetingsService implements IMeetingsService {
     private final OrganRepository organRepository;
 
     @Override
-    public Page<MeetingDto> getMeetings(@NotNull Pageable page) {
-        final Page<Meeting> meetings = meetingRepository.findAll(page);
+    public Page<MeetingDto> getMeetings(@NotNull final Pageable page) {
+        final Page<Meeting> meetings = getMeetingsInternal(page);
         final Map<Long, MeetingState> states = meetingStateRepository
                 .findAllById(meetings.map(Meeting::getId).map(MeetingAgendaId::getId))
                 .stream()
@@ -65,6 +66,19 @@ public class MeetingsService implements IMeetingsService {
                 .stream()
                 .collect(Collectors.toMap(Organ::getId, Function.identity()));
         return meetings.map(e -> createMeetingDto(e, states.get(e.getId().getId()), organs.get(e.getOrganId())));
+    }
+
+    private Page<Meeting> getMeetingsInternal(@NotNull final Pageable page) {
+        final Page<Meeting> meetings = meetingRepository.findAll(page);
+        final Map<MeetingAgendaId, Meeting> meetingMap = meetings
+                .stream()
+                .collect(Collectors.toMap(Meeting::getId, Function.identity(), (a, b) -> b));
+        final List<Meeting> filteredMeetings = meetings
+                .stream()
+                .filter(e -> MeetingAgendaType.APPROVED.getType() == e.getId().getAgendaType() || !meetingMap
+                        .containsKey(new MeetingAgendaId(e.getId().getId(), MeetingAgendaType.APPROVED.getType())))
+                .toList();
+        return new PageImpl<>(filteredMeetings, page, filteredMeetings.size());
     }
 
     private MeetingDto createMeetingDto(final Meeting meeting, @Nullable final MeetingState state, final Organ organ) {
@@ -108,7 +122,7 @@ public class MeetingsService implements IMeetingsService {
         return new MeetingDetailDto(
                 meetingPoints
                         .stream()
-                        .filter(e -> !(MEETING_POINT_TYPES_INTERPELLATION_ANSWER == e.getTypeId()))
+                        .filter(e -> MEETING_POINT_TYPES_INTERPELLATION_ANSWER != e.getTypeId())
                         .map(e -> createPointDto(e, states.getOrDefault(e.getStateId(), null)))
                         .toList()
         );

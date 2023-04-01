@@ -1,0 +1,36 @@
+<dataset>
+    <meeting
+            id="1"
+            agenda_type="0"
+            organ_id="1"
+            meeting_number="22"
+            date_from="2021-10-01 10:20"
+            date_to="2021-10-02 11:00"
+            updated_at="2021-09-02 12:42:54.432626"
+    />
+    <meeting
+            id="1"
+            agenda_type="1"
+            organ_id="1"
+            meeting_number="22"
+            date_from="2021-10-01 10:20"
+            date_to="2021-10-02 11:00"
+            updated_at="2021-09-02 12:42:54.432626"
+    />
+    <meeting
+            id="3"
+            agenda_type="0"
+            organ_id="1"
+            meeting_number="22"
+            date_from="2021-10-01 10:20"
+            date_to="2021-10-02 11:00"
+            updated_at="2021-09-02 12:42:54.432626"
+    />
+    <organ
+            id="1"
+            organ_type_id="1"
+            short_name="Organ name"
+            name_cz="Name cz"
+            date_from="2021-09-02"
+    />
+</dataset>
