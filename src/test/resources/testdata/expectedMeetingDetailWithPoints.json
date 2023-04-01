@@ -1,0 +1,13 @@
+{
+  "meetingPoints": [
+    {
+      "name": "Point name",
+      "state": "Meeting point description",
+      "type": "2. čtení"
+    },
+    {
+      "name": "Point name 2",
+      "type": "1. čtení"
+    }
+  ]
+}

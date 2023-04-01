@@ -15,7 +15,7 @@ public class TestUtils {
         return res == null ? null : new String(res, StandardCharsets.UTF_8);
     }
 
-    public static byte[] getResourceBytes(String resourceName) {
+    private static byte[] getResourceBytes(String resourceName) {
         ClassLoader contextCL = Thread.currentThread().getContextClassLoader();
 
         InputStream is = contextCL.getResourceAsStream("/" + resourceName);
@@ -39,7 +39,7 @@ public class TestUtils {
         return content;
     }
 
-    public static byte[] readFile(String name, InputStream is) {
+    private static byte[] readFile(String name, InputStream is) {
         ByteArrayOutputStream bout = null;
         try {
             if (is == null) {

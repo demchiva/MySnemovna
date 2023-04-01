@@ -33,4 +33,37 @@
             name_cz="Name cz"
             date_from="2021-09-02"
     />
+    <meeting_point
+            id="1"
+            point_id="1"
+            agenda_type="0"
+            meeting_id="1"
+            type_id="3"
+            point_number="22"
+            full_name="Point name"
+            state_id="1"
+    />
+    <meeting_point
+            id="2"
+            point_id="2"
+            agenda_type="0"
+            meeting_id="1"
+            type_id="1"
+            point_number="222"
+            full_name="Point name 2"
+    />
+    <meeting_point
+            id="3"
+            point_id="1"
+            agenda_type="1"
+            meeting_id="1"
+            type_id="3"
+            point_number="22"
+            full_name="Point name"
+            state_id="1"
+    />
+    <meeting_point_state
+            id="1"
+            description="Meeting point description"
+    />
 </dataset>

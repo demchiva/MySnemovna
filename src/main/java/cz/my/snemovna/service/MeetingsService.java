@@ -139,7 +139,7 @@ public class MeetingsService implements IMeetingsService {
     private String getType(final MeetingPoint point) {
         return MEETING_POINT_TYPES
                 .stream()
-                .filter(e -> e.x().contains(point.getType()))
+                .filter(e -> e.x().contains(point.getTypeId()))
                 .map(Tuple::y)
                 .findFirst()
                 .orElse(null);
