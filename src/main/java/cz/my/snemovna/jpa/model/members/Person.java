@@ -9,6 +9,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+/**
+ * The entity represents person that has some relation to parliament.
+ */
 @Entity
 @Table(name = "person")
 @Data

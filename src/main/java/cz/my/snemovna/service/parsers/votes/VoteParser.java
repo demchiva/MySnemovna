@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * The source parser for votes.
+ */
 @Component
 public class VoteParser extends AbstractVoteWithYearSourceParser<Vote> {
 

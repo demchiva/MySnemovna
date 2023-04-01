@@ -1,21 +1,23 @@
 package cz.my.snemovna.config;
 
-import cz.my.snemovna.service.loader.AgendaSourceLoader;
+import cz.my.snemovna.service.loader.IAgendaSourceLoader;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import javax.annotation.PostConstruct;
-
+/**
+ * The source configuration. Loads all data to db in cron job.
+ */
 @EnableScheduling
 @Configuration
 @Profile("!test")
 @RequiredArgsConstructor
 public class SourcesConfiguration {
 
-    private final AgendaSourceLoader agendaSourceLoader;
+    private final IAgendaSourceLoader agendaSourceLoader;
 
     /**
      * Regularly fills the database with new data.

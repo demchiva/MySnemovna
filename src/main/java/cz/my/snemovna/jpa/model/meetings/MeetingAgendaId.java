@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * The class represents id for meeting entity.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

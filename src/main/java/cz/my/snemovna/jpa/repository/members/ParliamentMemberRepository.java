@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+/**
+ * The parliament member repository.
+ */
 public interface ParliamentMemberRepository extends JpaRepository<ParliamentMember, Long> {
 
     // TODO join could be in sql view.

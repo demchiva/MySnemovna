@@ -8,6 +8,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * The class represents meeting of parliament members.
+ */
 @Entity
 @Table(name = "meeting")
 @Data

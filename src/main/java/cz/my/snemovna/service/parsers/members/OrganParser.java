@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * The source parser for organs.
+ */
 @Component
 public class OrganParser extends AbstractSourceParser<Organ> {
 

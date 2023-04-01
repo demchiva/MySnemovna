@@ -8,12 +8,19 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * The entity represents additional information about person.
+ * Typically, it is information about relation to external systems (e.g. membership in Senat.)
+ */
 @Entity
 @Table(name = "person_extra")
 @Data
 public class PersonExtra implements Serializable {
 
     @Id
+    @Column(name = "id")
+    private Long id;
+
     @Column(name = "person_id")
     private Long personId;
 

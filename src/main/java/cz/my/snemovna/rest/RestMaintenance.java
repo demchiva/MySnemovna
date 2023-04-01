@@ -1,18 +1,24 @@
 package cz.my.snemovna.rest;
 
-import cz.my.snemovna.service.loader.AgendaSourceLoader;
+import cz.my.snemovna.service.loader.IAgendaSourceLoader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * The maintenance for tests. NOT PUBLIC !!!
+ */
 @RestController
 @RequestMapping("/api/maintenance")
 @RequiredArgsConstructor
 public class RestMaintenance {
 
-    private final AgendaSourceLoader agendaSourceLoader;
+    private final IAgendaSourceLoader agendaSourceLoader;
 
+    /**
+     * The method reloads database data.
+     */
     @PostMapping("/load")
     public void load() {
         agendaSourceLoader.load();

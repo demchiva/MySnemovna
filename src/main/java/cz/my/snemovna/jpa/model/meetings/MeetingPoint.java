@@ -10,6 +10,10 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * The entity class represents one meeting point to discuss in one Meeting.
+ * Typically, one meeting has more than one point (1:n).
+ */
 @Entity
 @Table(name = "meeting_point")
 @Data

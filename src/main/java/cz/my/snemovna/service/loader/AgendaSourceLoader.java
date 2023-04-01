@@ -8,22 +8,23 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AgendaSourceLoader {
+public class AgendaSourceLoader implements IAgendaSourceLoader {
 
     private final List<SourceLoader> sourceLoaders;
 
-    public void loadAgendaSourceData() {
+    private void loadAgendaSourceData() {
         sourceLoaders.forEach(SourceLoader::load);
     }
 
-    public void fillDatabaseWithAgendaSourceData() {
+    private void fillDatabaseWithAgendaSourceData() {
         sourceLoaders.stream().sorted(Comparator.comparing(SourceLoader::getPriority)).forEach(SourceLoader::fill);
     }
 
-    public void deleteLoadedData() {
+    private void deleteLoadedData() {
         sourceLoaders.forEach(SourceLoader::delete);
     }
 
+    @Override
     public void load() {
         try {
             loadAgendaSourceData();

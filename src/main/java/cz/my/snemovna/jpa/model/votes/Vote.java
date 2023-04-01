@@ -10,6 +10,9 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * The entity represents one vote process.
+ */
 @Entity
 @Table(name = "vote")
 @Data

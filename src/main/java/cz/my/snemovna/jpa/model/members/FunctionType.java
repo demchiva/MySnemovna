@@ -8,6 +8,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * The entity represents all possible functions types.
+ * Function can have only one type.
+ * Function type can be in more than one function (n:1).
+ */
 @Entity
 @Table(name = "function_type")
 @Data

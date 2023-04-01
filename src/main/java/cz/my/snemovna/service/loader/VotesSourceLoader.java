@@ -7,6 +7,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
+/**
+ * The source loader for votes agenda.
+ * Agenda more complex than others, because has one file per PSP period.
+ */
 @Component
 public class VotesSourceLoader extends AbstractSourceLoader {
 
@@ -32,6 +36,8 @@ public class VotesSourceLoader extends AbstractSourceLoader {
     @Override
     public void load() {
         int currentYear = LocalDate.now().getYear();
+
+        // Checks if url for this year exist in sources on the web  and save it in this case.
         for (int votesYear = startYear; votesYear <= currentYear; votesYear++) {
             final String votesYearString = String.valueOf(votesYear);
             final String url = dataSourceUrl.replace(VALUE_TO_REPLACE, votesYearString);
@@ -44,6 +50,8 @@ public class VotesSourceLoader extends AbstractSourceLoader {
     @Override
     public void fill() {
         int currentYear = LocalDate.now().getYear();
+
+        // Checks if directory for this year exist in loaded sources and fills db in this case.
         for (int votesYear = startYear; votesYear <= currentYear; votesYear++) {
             final String dirName = String.format(DIR_NAME, votesYear);
             if (ArchiveUtils.isDirectoryExist(dirName)) {
@@ -60,6 +68,8 @@ public class VotesSourceLoader extends AbstractSourceLoader {
     @Override
     public void delete() {
         int currentYear = LocalDate.now().getYear();
+
+        // Deletes directory for every year. In case directory does not exist deleting do nothing.
         for (int votesYear = startYear; votesYear <= currentYear; votesYear++) {
             ArchiveUtils.deleteDirectory(String.format(DIR_NAME, votesYear));
         }

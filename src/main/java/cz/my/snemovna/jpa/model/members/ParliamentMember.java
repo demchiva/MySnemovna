@@ -8,6 +8,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * The entity represents parliament member.
+ * Entity has reference to person entity.
+ * One person can have more than one membership in parliament (1:n).
+ */
 @Entity
 @Table(name = "member")
 @Data
@@ -20,12 +25,21 @@ public class ParliamentMember implements Serializable {
     @Column(name = "person_id")
     private Long personId;
 
+    /**
+     * Reference to {@link Organ}.
+     */
     @Column(name = "region_id")
     private Long regionId;
 
+    /**
+     * Reference to {@link Organ}.
+     */
     @Column(name = "party_id")
     private Long partyId;
 
+    /**
+     * Reference to {@link Organ}.
+     */
     @Column(name = "period_id")
     private Long periodId;
 

@@ -4,6 +4,9 @@ import cz.my.snemovna.service.parsers.AbstractSourceParser;
 import jakarta.persistence.EntityManager;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+/**
+ * The extended implementation of standard parser for work with more votes agenda directories.
+ */
 public abstract class AbstractVoteWithYearSourceParser<T> extends AbstractSourceParser<T> {
 
     protected AbstractVoteWithYearSourceParser(final Class<T> type,

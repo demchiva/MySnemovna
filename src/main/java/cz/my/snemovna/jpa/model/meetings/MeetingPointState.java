@@ -8,6 +8,10 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * The entity class represents all possible meeting point states.
+ * Meeting point can be only in one state at the same time.
+ */
 @Entity
 @Table(name = "meeting_point_state")
 @Data

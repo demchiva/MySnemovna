@@ -81,8 +81,8 @@ public class MeetingsService implements IMeetingsService {
     }
 
     private String getDate(final Meeting meeting, final MeetingState state) {
-       return state != null && state.getMeetingStatusText() != null 
-               ? state.getMeetingStatusText() 
+       return state != null && state.getMeetingStatusText2() != null
+               ? state.getMeetingStatusText2()
                : getDateFromMeeting(meeting);
     }
 

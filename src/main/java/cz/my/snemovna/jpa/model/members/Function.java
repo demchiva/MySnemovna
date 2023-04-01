@@ -8,6 +8,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * The entity represents functions in parliament organs.
+ * Function can be used in several enrollments (n:1).
+ * One enrollment can have only one function.
+ */
 @Entity
 @Table(name = "function")
 @Data

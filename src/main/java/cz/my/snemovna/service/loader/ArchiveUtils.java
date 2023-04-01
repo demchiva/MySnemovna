@@ -1,6 +1,8 @@
 package cz.my.snemovna.service.loader;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
@@ -16,11 +18,23 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+/**
+ * The utils for manage the ZIP archives and files.
+ */
 @Slf4j
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ArchiveUtils {
 
+    /**
+     * The basic source file path.
+     */
     public static final String BASE_DESTINATION = "src/main/resources/source/";
 
+    /**
+     * The method load the zip archive, unzip it and save to file system path {@link this#BASE_DESTINATION}.
+     * @param url the internet resource to load from.
+     * @param dirName the name of the directory for saving files.
+     */
     @SneakyThrows
     public static void unZipAndSave(@NotNull final String url, @NotNull final String dirName) {
         String zipFileName = BASE_DESTINATION + dirName + ".zip";
@@ -70,14 +84,19 @@ public class ArchiveUtils {
         deleteSourceFile(dirName);
     }
 
+    /**
+     * The method checks if the directory with given name exist.
+     * @param dirName the directory name.
+     * @return 'true' if directory exist, otherwise 'false'.
+     */
     public static boolean isDirectoryExist(@NotNull final String dirName) {
         final File dir = new File(BASE_DESTINATION + dirName);
         return dir.exists() && dir.isDirectory();
     }
 
     @SneakyThrows
-    public static void deleteSourceFile(@NotNull final String dirName) {
-        FileUtils.forceDelete(new File(BASE_DESTINATION + dirName + ".zip"));
+    private static void deleteSourceFile(@NotNull final String fileName) {
+        FileUtils.forceDelete(new File(BASE_DESTINATION + fileName + ".zip"));
     }
 
     @SneakyThrows
@@ -108,6 +127,11 @@ public class ArchiveUtils {
         return destFile;
     }
 
+
+    /**
+     * The method deletes directory with given name.
+     * @param dirName the directory name.
+     */
     @SneakyThrows
     public static void deleteDirectory(@NotNull final String dirName) {
         FileUtils.deleteDirectory(new File(BASE_DESTINATION + dirName));

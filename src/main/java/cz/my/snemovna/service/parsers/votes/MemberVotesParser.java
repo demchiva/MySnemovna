@@ -11,6 +11,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * The source parser for particular member votes.
+ */
 @Component
 public class MemberVotesParser extends AbstractVoteWithYearSourceParser<MemberVotes> {
 

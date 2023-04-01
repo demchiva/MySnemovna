@@ -7,6 +7,9 @@ import java.util.List;
  */
 public record MeetingDetailDto(List<MeetingPointDto> meetingPoints) {
 
+    /**
+     * The meeting point dto.
+     */
     public record MeetingPointDto(String name, String state, String type) {
 
     }

@@ -11,6 +11,10 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * The entity represents member voting result in particular vote.
+ * Member has only one result in particular vote.
+ */
 @Entity
 @Table(name = "member_votes")
 @Data

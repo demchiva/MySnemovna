@@ -20,6 +20,10 @@ import java.util.Scanner;
 
 import static cz.my.snemovna.service.loader.ArchiveUtils.BASE_DESTINATION;
 
+/**
+ * The abstract and default implementation of {@link SourceParser}.
+ * @param <T>
+ */
 @Slf4j
 public abstract class AbstractSourceParser<T> implements SourceParser {
 
@@ -83,7 +87,7 @@ public abstract class AbstractSourceParser<T> implements SourceParser {
         );
     }
 
-    public String getTableName(final EntityManager entityManager, final Class<T> type) {
+    private String getTableName(final EntityManager entityManager, final Class<T> type) {
         final Metamodel meta = entityManager.getMetamodel();
         final EntityType<T> entityType = meta.entity(type);
 
@@ -99,14 +103,34 @@ public abstract class AbstractSourceParser<T> implements SourceParser {
         jdbcTemplate.execute(String.format("delete from %s", tableName));
     }
 
+    /**
+     * The method get the column order to save in db.
+     * Format should satisfy requirements of SQL insert (e.g. "id,person_id,name").
+     */
     protected abstract String getColumnsOrder();
 
+    /**
+     * The method query placeholder for SQL insert with right count of params.
+     * @param item the params to save.
+     * @return query placeholder.
+     */
     protected String getQueryPlaceholder(Object[] item) {
         return "?" + ",?".repeat(Math.max(0, item.length - 1));
     }
 
+    /**
+     * The method converts source data to format for save to db.
+     * @param sourceData list of data represent one line of source file.
+     * @return the one row db data in right format.
+     */
     protected abstract Object[] convert(List<String> sourceData);
 
+    /**
+     * The method creates path to source file.
+     * @param dirName directory name
+     * @param sourceName file name.
+     * @return path to source file.
+     */
     protected String createSourcePath(final String dirName, final String sourceName) {
         return getDirectoryPath(dirName) + "/" + sourceName + ".unl";
     }

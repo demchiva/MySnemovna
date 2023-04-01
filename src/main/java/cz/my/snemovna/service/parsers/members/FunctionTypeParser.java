@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * The source parser for function types.
+ */
 @Component
 public class FunctionTypeParser extends AbstractSourceParser<FunctionType> {
 

@@ -8,6 +8,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * The entity represents all possible organ types.
+ * Organ can have only one type.
+ * Same type can have more than one organ (n:1).
+ */
 @Entity
 @Table(name = "organ_type")
 @Data

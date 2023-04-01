@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * The source parser for person.
+ */
 @Component
 public class PersonParser extends AbstractSourceParser<Person> {
 

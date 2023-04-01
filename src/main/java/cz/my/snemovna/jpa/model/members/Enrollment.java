@@ -1,24 +1,35 @@
 package cz.my.snemovna.jpa.model.members;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
+/**
+ * The entity represents person enrollment (organ or function in parliament).
+ * One person can have more than one enrollment (1:n).
+ */
 @Entity
 @Table(name = "enrollment")
 @Data
 public class Enrollment implements Serializable {
 
-    @EmbeddedId
-    private EnrollmentId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "person_id")
+    private Long personId;
+
+    @Column(name = "id_of")
+    private Long membershipOrFunctionId;
 
     @Column(name = "type")
     private Integer membershipOrFunction;
@@ -34,17 +45,4 @@ public class Enrollment implements Serializable {
 
     @Column(name = "mandate_to")
     private LocalDate mandateTo;
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Embeddable
-    public class EnrollmentId implements Serializable {
-
-        @Column(name = "person_id")
-        private Long personId;
-
-        @Column(name = "id_of")
-        private Long membershipOrFunctionId;
-    }
 }

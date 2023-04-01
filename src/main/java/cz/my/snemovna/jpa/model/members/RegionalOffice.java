@@ -8,6 +8,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * The entity represents member regional office (1:1).
+ */
 @Entity
 @Table(name = "regional_office")
 @Data

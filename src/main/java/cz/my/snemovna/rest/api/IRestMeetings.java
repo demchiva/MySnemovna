@@ -4,6 +4,9 @@ import cz.my.snemovna.dto.meetings.MeetingAgendaType;
 import cz.my.snemovna.dto.meetings.MeetingDetailDto;
 import cz.my.snemovna.dto.meetings.MeetingDto;
 import cz.my.snemovna.rest.PageApiRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 
@@ -17,6 +20,7 @@ import javax.ws.rs.QueryParam;
 /**
  * The class for manage meetings agenda.
  */
+@Tag(name = "Meetings", description = "Endpoints for manage meetings agenda.")
 @Path("/api/v1/meetings")
 @Consumes(MediaType.APPLICATION_JSON_VALUE)
 @Produces(MediaType.APPLICATION_JSON_VALUE)
@@ -27,15 +31,17 @@ public interface IRestMeetings {
      * @param page the page.
      * @return the meetings page.
      */
+    @Operation(summary = "Get the meetings for meetings listing")
     @GET
     @Path("/")
-    Page<MeetingDto> getMeetings(PageApiRequest page);
+    Page<MeetingDto> getMeetings(@ParameterObject PageApiRequest page);
 
     /**
      * Get meeting detail.
      * @param meetingId meeting id.
      * @return the meeting detail.
      */
+    @Operation(summary = "Get meeting detail.")
     @GET
     @Path("/{meetingId}")
     MeetingDetailDto getMeeting(@PathParam("meetingId") Long meetingId, @QueryParam("type") MeetingAgendaType type);

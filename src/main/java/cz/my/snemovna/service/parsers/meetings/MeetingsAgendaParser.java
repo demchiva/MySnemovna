@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * The agenda parser for meeting agenda.
+ */
 @Service
 public class MeetingsAgendaParser extends AbstractAgendaParser {
 

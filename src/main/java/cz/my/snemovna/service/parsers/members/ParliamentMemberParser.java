@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * The source parser for members.
+ */
 @Component
 public class ParliamentMemberParser extends AbstractSourceParser<ParliamentMember> {
 

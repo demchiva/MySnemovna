@@ -4,6 +4,9 @@ import cz.my.snemovna.service.parsers.members.MembersAgendaParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+/**
+ * The source loader for members agenda.
+ */
 @Component
 public class MembersSourceLoader extends AbstractSourceLoader {
 

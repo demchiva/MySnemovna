@@ -5,10 +5,14 @@ import cz.my.snemovna.service.parsers.AbstractSourceParser;
 import cz.my.snemovna.service.parsers.AgendaSource;
 import jakarta.persistence.EntityManager;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-//@Component
+/**
+ * The source parser for additional person information.
+ */
+@Component
 public class PersonExtraParser extends AbstractSourceParser<PersonExtra> {
 
     public PersonExtraParser(final JdbcTemplate jdbcTemplate, final EntityManager entityManager) {

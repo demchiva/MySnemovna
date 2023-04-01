@@ -2,6 +2,9 @@ package cz.my.snemovna.service.loader;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * The abstract and default implementation of {@link SourceLoader}.
+ */
 @RequiredArgsConstructor
 public abstract class AbstractSourceLoader implements SourceLoader {
 
@@ -12,6 +15,9 @@ public abstract class AbstractSourceLoader implements SourceLoader {
         ArchiveUtils.unZipAndSave(dataSourceUrl, getDirectoryName());
     }
 
+    /**
+     * The method get the directory name to save files.
+     */
     public abstract String getDirectoryName();
 
     @Override

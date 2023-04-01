@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * The source parser for meetings.
+ */
 @Component
 public class MeetingParser extends AbstractSourceParser<Meeting> {
 

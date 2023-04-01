@@ -7,6 +7,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+/**
+ * The member votes results repository.
+ */
 public interface MemberVotesRepository extends JpaRepository<MemberVotes, MemberVotes.MemberVotesId> {
 
     @Query("select mv from MemberVotes mv where mv.memberId.voteId = :voteId")
