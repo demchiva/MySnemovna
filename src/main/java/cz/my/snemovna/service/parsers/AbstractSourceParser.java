@@ -7,6 +7,7 @@ import jakarta.persistence.metamodel.Metamodel;
 import jakarta.validation.constraints.NotNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.BufferedReader;
@@ -17,8 +18,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import static cz.my.snemovna.service.loader.ArchiveUtils.BASE_DESTINATION;
 
 /**
  * The abstract and default implementation of {@link SourceParser}.
@@ -31,6 +30,9 @@ public abstract class AbstractSourceParser<T> implements SourceParser {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     protected final String tableName;
     protected final JdbcTemplate jdbcTemplate;
+
+    @Value("${base.loader.path}")
+    protected String baseDestination;
 
     protected AbstractSourceParser(final Class<T> type,
                                    final JdbcTemplate jdbcTemplate,
@@ -136,7 +138,7 @@ public abstract class AbstractSourceParser<T> implements SourceParser {
     }
 
     protected String getDirectoryPath(final String dirName) {
-        return BASE_DESTINATION + dirName;
+        return baseDestination + dirName;
     }
 
     protected Long safeParseToLong(String value) {

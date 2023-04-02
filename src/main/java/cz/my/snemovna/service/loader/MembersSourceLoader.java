@@ -14,8 +14,9 @@ public class MembersSourceLoader extends AbstractSourceLoader {
     private final MembersAgendaParser membersAgendaParser;
 
     public MembersSourceLoader(@Value("${snemovna.url.members}") String dataSourceUrl,
-                               MembersAgendaParser membersAgendaParser) {
-        super(dataSourceUrl);
+                               MembersAgendaParser membersAgendaParser,
+                               ArchiveUtils archiveUtils) {
+        super(dataSourceUrl, archiveUtils);
         this.membersAgendaParser = membersAgendaParser;
     }
 

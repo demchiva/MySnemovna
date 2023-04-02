@@ -9,10 +9,11 @@ import lombok.RequiredArgsConstructor;
 public abstract class AbstractSourceLoader implements SourceLoader {
 
     protected final String dataSourceUrl;
+    protected final ArchiveUtils archiveUtils;
 
     @Override
     public void load() {
-        ArchiveUtils.unZipAndSave(dataSourceUrl, getDirectoryName());
+        archiveUtils.unZipAndSave(dataSourceUrl, getDirectoryName());
     }
 
     /**
@@ -22,6 +23,6 @@ public abstract class AbstractSourceLoader implements SourceLoader {
 
     @Override
     public void delete() {
-        ArchiveUtils.deleteDirectory(getDirectoryName());
+        archiveUtils.deleteDirectory(getDirectoryName());
     }
 }

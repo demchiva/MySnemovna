@@ -130,7 +130,7 @@ public class VotesService implements IVotesService {
             final Person person = persons.get(member.getPersonId());
             final Organ party = parties.get(member.getPartyId());
             return new VoteMembersDto(
-                    membersService.getFullNameWithTitles(person),
+                    membersService.getFullNameWithTitles(person).trim(),
                     party.getShortName(),
                     member.isPhoto() ? getPhotoUrl(period.getDateFrom().getYear(), person.getId()) : null,
                     memberVotes.getResult()

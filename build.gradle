@@ -60,6 +60,7 @@ dependencies {
 	testImplementation 'com.github.springtestdbunit:spring-test-dbunit:1.3.0'
 	testCompileOnly 'org.projectlombok:lombok'
 	testRuntimeOnly 'com.h2database:h2'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 flyway {

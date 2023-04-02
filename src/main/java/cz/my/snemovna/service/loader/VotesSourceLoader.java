@@ -25,9 +25,10 @@ public class VotesSourceLoader extends AbstractSourceLoader {
             @Value("${snemovna.url.votes}") String dataSourceUrl,
             @Value("${snemovna.data.startYear}") int startYear,
             UrlUtils urlUtils,
-            VotesAgendaParser votesAgendaParser
+            VotesAgendaParser votesAgendaParser,
+            ArchiveUtils archiveUtils
     ) {
-        super(dataSourceUrl);
+        super(dataSourceUrl, archiveUtils);
         this.urlUtils = urlUtils;
         this.startYear = startYear;
         this.votesAgendaParser = votesAgendaParser;
@@ -42,7 +43,7 @@ public class VotesSourceLoader extends AbstractSourceLoader {
             final String votesYearString = String.valueOf(votesYear);
             final String url = dataSourceUrl.replace(VALUE_TO_REPLACE, votesYearString);
             if (urlUtils.isUrlExist(url)) {
-                ArchiveUtils.unZipAndSave(url, String.format(DIR_NAME, votesYearString));
+                archiveUtils.unZipAndSave(url, String.format(DIR_NAME, votesYearString));
             }
         }
     }
@@ -54,7 +55,7 @@ public class VotesSourceLoader extends AbstractSourceLoader {
         // Checks if directory for this year exist in loaded sources and fills db in this case.
         for (int votesYear = startYear; votesYear <= currentYear; votesYear++) {
             final String dirName = String.format(DIR_NAME, votesYear);
-            if (ArchiveUtils.isDirectoryExist(dirName)) {
+            if (archiveUtils.isDirectoryExist(dirName)) {
                 votesAgendaParser.parseAndSave(dirName);
             }
         }
@@ -71,7 +72,7 @@ public class VotesSourceLoader extends AbstractSourceLoader {
 
         // Deletes directory for every year. In case directory does not exist deleting do nothing.
         for (int votesYear = startYear; votesYear <= currentYear; votesYear++) {
-            ArchiveUtils.deleteDirectory(String.format(DIR_NAME, votesYear));
+            archiveUtils.deleteDirectory(String.format(DIR_NAME, votesYear));
         }
     }
 

@@ -14,8 +14,9 @@ public class MeetingsSourceLoader extends AbstractSourceLoader {
     private final MeetingsAgendaParser meetingsAgendaParser;
 
     public MeetingsSourceLoader(@Value("${snemovna.url.meetings}") String dataSourceUrl,
-                                MeetingsAgendaParser meetingsAgendaParser) {
-        super(dataSourceUrl);
+                                MeetingsAgendaParser meetingsAgendaParser,
+                                ArchiveUtils archiveUtils) {
+        super(dataSourceUrl, archiveUtils);
         this.meetingsAgendaParser = meetingsAgendaParser;
     }
 

@@ -1,0 +1,34 @@
+[
+  {
+    "id": 66758,
+    "pointId": 50172,
+    "agendaType": 0,
+    "meetingId": 718,
+    "typeId": 0,
+    "pointNumber": 0,
+    "fullName": "Po�ad sch�ze",
+    "nameSuffix": " ",
+    "note": "",
+    "stateId": 1,
+    "shortNote": "",
+    "type": 0,
+    "shortName": "Po�ad sch�ze"
+  },
+  {
+    "id": 66760,
+    "pointId": 50341,
+    "agendaType": 0,
+    "meetingId": 718,
+    "printId": 42127,
+    "typeId": 1,
+    "pointNumber": 1,
+    "fullName": "N�vrh poslance Andreje Babi�e na vyd�n� z�kona, kter�m se m�n� z�kon �. 236/1995 Sb., o platu a dal��ch n�le�itostech spojen�ch s v�konem funkce p�edstavitel� st�tn� moci a n�kter�ch st�tn�ch org�n� a soudc� a poslanc� Evropsk�ho parlamentu, ve zn�n� pozd�j��ch p�edpis� ",
+    "nameSuffix": "/sn�movn� tisk 54/",
+    "note": "",
+    "stateId": 3,
+    "mode": 1,
+    "shortNote": "",
+    "type": 0,
+    "shortName": "p plat p�edst.st.moci"
+  }
+]

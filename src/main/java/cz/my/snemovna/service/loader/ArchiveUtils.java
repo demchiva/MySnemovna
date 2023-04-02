@@ -1,11 +1,11 @@
 package cz.my.snemovna.service.loader;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 
 import java.io.File;
@@ -22,26 +22,27 @@ import java.util.zip.ZipInputStream;
  * The utils for manage the ZIP archives and files.
  */
 @Slf4j
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@Service
 public class ArchiveUtils {
 
     /**
      * The basic source file path.
      */
-    public static final String BASE_DESTINATION = "src/main/resources/source/";
+    @Value("${base.loader.path}")
+    public String baseDestination;
 
     /**
-     * The method load the zip archive, unzip it and save to file system path {@link this#BASE_DESTINATION}.
+     * The method load the zip archive, unzip it and save to file system path {@link this#baseDestination}.
      * @param url the internet resource to load from.
      * @param dirName the name of the directory for saving files.
      */
     @SneakyThrows
-    public static void unZipAndSave(@NotNull final String url, @NotNull final String dirName) {
-        String zipFileName = BASE_DESTINATION + dirName + ".zip";
+    public void unZipAndSave(@NotNull final String url, @NotNull final String dirName) {
+        String zipFileName = baseDestination + dirName + ".zip";
         loadArchive(url, zipFileName);
 
         File zipSource =  new File(zipFileName);
-        File directory = new File(BASE_DESTINATION + dirName);
+        File directory = new File(baseDestination + dirName);
 
         LOGGER.info("Start unzip file: {}", zipFileName);
         final StopWatch stopWatch = new StopWatch();
@@ -89,14 +90,14 @@ public class ArchiveUtils {
      * @param dirName the directory name.
      * @return 'true' if directory exist, otherwise 'false'.
      */
-    public static boolean isDirectoryExist(@NotNull final String dirName) {
-        final File dir = new File(BASE_DESTINATION + dirName);
+    public boolean isDirectoryExist(@NotNull final String dirName) {
+        final File dir = new File(baseDestination + dirName);
         return dir.exists() && dir.isDirectory();
     }
 
     @SneakyThrows
-    private static void deleteSourceFile(@NotNull final String fileName) {
-        FileUtils.forceDelete(new File(BASE_DESTINATION + fileName + ".zip"));
+    private void deleteSourceFile(@NotNull final String fileName) {
+        FileUtils.forceDelete(new File(baseDestination + fileName + ".zip"));
     }
 
     @SneakyThrows
@@ -114,7 +115,7 @@ public class ArchiveUtils {
         LOGGER.info("End loading url: {}. Loading took {} millis", url, stopWatch.getTotalTimeMillis());
     }
 
-    private static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
+    private File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
         File destFile = new File(destinationDir, zipEntry.getName());
 
         String destDirPath = destinationDir.getCanonicalPath();
@@ -133,7 +134,7 @@ public class ArchiveUtils {
      * @param dirName the directory name.
      */
     @SneakyThrows
-    public static void deleteDirectory(@NotNull final String dirName) {
-        FileUtils.deleteDirectory(new File(BASE_DESTINATION + dirName));
+    public void deleteDirectory(@NotNull final String dirName) {
+        FileUtils.deleteDirectory(new File(baseDestination + dirName));
     }
 }

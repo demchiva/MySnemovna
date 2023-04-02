@@ -33,6 +33,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MembersService implements IMembersService {
 
+    private static final String EMPTY_VALUE = "\\ ";
+
     private final ParliamentMemberRepository memberRepository;
     private final PersonRepository personRepository;
     private final OrganRepository organRepository;
@@ -84,7 +86,7 @@ public class MembersService implements IMembersService {
         return new MemberDto(
                 memberId,
                 getPhotoUrl(period.getDateFrom().getYear(), person.getId()),
-                getFullNameWithTitles(person),
+                getFullNameWithTitles(person).trim(),
                 party != null ? party.getNameCz() : null,
                 region != null ? region.getNameCz() : null,
                 period.getDateFrom(),
@@ -123,23 +125,35 @@ public class MembersService implements IMembersService {
         return new MemberDetailDto(
                 memberId,
                 getPhotoUrl(period.getDateFrom().getYear(), person.getId()),
-                getFullNameWithTitles(person),
+                getFullNameWithTitles(person).trim(),
                 party != null ? party.getNameCz() : null,
                 region != null ? region.getNameCz() : null,
                 period.getDateFrom(),
                 period.getDateTo(),
-                new MemberDetailDto.OfficeAddress(
+                isValidOffice(member)
+                    ? new MemberDetailDto.OfficeAddress(
                         member.getStreet(),
                         member.getMunicipality(),
                         member.getZip(),
                         member.getPhone()
-                ),
-                member.getWeb(),
-                member.getFacebook(),
+                    ) : null,
+                isAcceptableValue(member.getWeb()) ? member.getWeb() : null,
+                isAcceptableValue(member.getFacebook()) ? member.getFacebook() : null,
                 urlUtils.getPspMemberUrl(person.getId()),
-                member.getEmail(),
+                isAcceptableValue(member.getEmail()) ? member.getEmail() : null,
                 person.getBirthdate()
         );
+    }
+
+    private boolean isValidOffice(final ParliamentMember member) {
+        return isAcceptableValue(member.getStreet())
+                || isAcceptableValue(member.getMunicipality())
+                || isAcceptableValue(member.getZip())
+                || isAcceptableValue(member.getPhone());
+    }
+
+    private boolean isAcceptableValue(final String value) {
+        return value != null && !value.isEmpty() && !EMPTY_VALUE.equals(value);
     }
 
     @Override
