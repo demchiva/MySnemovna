@@ -1,1 +1,1 @@
-web: java -jar build/libs/snemovna-0.0.1-SNAPSHOT.jar
+web: java -jar -Dspring.profiles.active=local build/libs/snemovna-0.0.1-SNAPSHOT.jar
