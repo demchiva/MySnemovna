@@ -1,1 +1,1 @@
-web: java -jar -Dserver.port=$PORT $JAVA_OPTS build/libs/snemovna-0.0.1-SNAPSHOT-plain.jar
+web: java -jar build/libs/snemovna-0.0.1-SNAPSHOT-plain.jar
