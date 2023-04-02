@@ -41,8 +41,9 @@ http://localhost:8085/api-docs
 
 Project requirements:
 
-- Java 17 or higher
-- IntelliJ IDEA
+- Java 17 or higher for project build and run
+- IntelliJ IDEA for project open and run
+- Postman for API testing
 
 ## Steps to run project
 
@@ -69,6 +70,12 @@ Edit configuration -> Fill "Active profiles" with value "local"
 ```
 
 Now you can run the project locally. Run green triangle and Tomcat server should be started. 
+
+In current state the database is empty. 
+For load the source data run maintenance API in Postman:
+```
+POST http://localhost:8085/api/maintenance/load
+```
 
 ## Copyright
 
