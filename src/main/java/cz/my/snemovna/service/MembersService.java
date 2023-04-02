@@ -24,6 +24,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -142,6 +144,11 @@ public class MembersService implements IMembersService {
 
     @Override
     public List<MemberVotesDto> getVotes(@NotNull final Long memberId) {
+        final Optional<ParliamentMember> member = memberRepository.findById(memberId);
+        if (member.isEmpty()) {
+            throw new NoSuchElementException("Member not found.");
+        }
+
         final List<MemberVotes> memberVotes = memberVotesRepository.findByMemberId(memberId);
         final Map<Long, Vote> votes = voteRepository
                 .findAllById(memberVotes.stream().map(e -> e.getMemberId().getVoteId()).toList())

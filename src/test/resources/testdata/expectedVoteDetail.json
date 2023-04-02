@@ -1,0 +1,13 @@
+{
+  "voteId": 1,
+  "result": "A",
+  "aye": 150,
+  "no": 20,
+  "abstained": 30,
+  "date": "2022-04-25T11:20:33",
+  "voteNumber": 33,
+  "pointNumber": 11,
+  "quorum": 100,
+  "psUrl": "https://www.psp.cz/sqw/hlasy.sqw?g=1&l=cz",
+  "longName": "Votes about parliament members salaries"
+}

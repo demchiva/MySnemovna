@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -89,6 +91,12 @@ public class VotesService implements IVotesService {
         private final Organ period;
 
         public MemberDtoCreator(final Long voteId) {
+            final Optional<Vote> vote = voteRepository.findById(voteId);
+
+            if (vote.isEmpty()) {
+                throw new NoSuchElementException("Vote not found");
+            }
+
             this.membersVotes = memberVotesRepository.findByVotesId(voteId)
                     .stream()
                     .collect(Collectors.toMap(e -> e.getMemberId().getMemberId(), Function.identity()));
@@ -102,9 +110,11 @@ public class VotesService implements IVotesService {
             this.parties = organRepository.findAllById(members.values().stream().map(ParliamentMember::getPartyId).toList())
                     .stream()
                     .collect(Collectors.toMap(Organ::getId, Function.identity()));
-            this.period = organRepository.findById(
-                    members.values().stream().findAny().map(ParliamentMember::getPeriodId).orElseThrow()
-            ).orElseThrow();
+            this.period = membersVotes.keySet().isEmpty()
+                    ? null
+                    : organRepository.findById(
+                            members.values().stream().findAny().map(ParliamentMember::getPeriodId).orElseThrow()
+                    ).orElse(null);
         }
 
         private List<VoteMembersDto> createMemberDtos() {

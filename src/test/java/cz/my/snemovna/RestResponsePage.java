@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The class for fix object mapper deserialize error.
+ * The class for fix object mapper deserialize error of {@link org.springframework.data.domain.Page} class.
  */
 public class RestResponsePage<T> extends PageImpl<T> {
 

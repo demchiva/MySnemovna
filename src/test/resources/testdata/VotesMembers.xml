@@ -1,0 +1,122 @@
+<dataset>
+    <vote
+            id="1"
+            organ_id="173"
+            meeting_number="22"
+            vote_number="33"
+            point_number="11"
+            date="2022-04-25"
+            time="11:20:33"
+            aye="150"
+            no="20"
+            abstained="30"
+            was_not_on_vote="0"
+            logged_in="180"
+            quorum="100"
+            result="A"
+            long_name="Votes about parliament members salaries"
+            short_name="Votes about p.m. salar."
+    />
+    <vote
+            id="2"
+            organ_id="173"
+            meeting_number="22"
+            vote_number="34"
+            point_number="1"
+            date="2022-04-25"
+            time="11:30:33"
+            aye="90"
+            no="70"
+            abstained="10"
+            was_not_on_vote="0"
+            logged_in="170"
+            quorum="100"
+            result="B"
+            long_name="Votes about parliament members salaries 2"
+            short_name="Votes about p.m. salar. 2"
+    />
+    <member_votes
+            member_id="1"
+            vote_id="1"
+            result="A"
+    />
+    <member_votes
+            member_id="1"
+            vote_id="2"
+            result="A"
+    />
+    <member_votes
+            member_id="2"
+            vote_id="1"
+            result="B"
+    />
+
+    <member
+            id="1"
+            person_id="1"
+            region_id="1"
+            party_id="2"
+            period_id="3"
+            web="https://google.com"
+            street="Sokolovska 1"
+            municipality="Praha 8"
+            zip="186 00"
+            email="demchiva@cvut.cz"
+            phone="+420 777 777 777"
+            psp_phone="234 567"
+            facebook="https://facebook.com"
+            photo="1"
+    />
+    <member
+            id="2"
+            person_id="2"
+            region_id="1"
+            party_id="2"
+            period_id="3"
+            web="https://google.com"
+            street="Sokolovska 2"
+            municipality="Praha 8"
+            zip="186 00"
+            email="demchiva2@cvut.cz"
+            phone="+420 777 777 777"
+            psp_phone="234 567"
+            facebook="https://facebook.com"
+            photo="0"
+    />
+    <person
+            id="1"
+            title_before="Bc."
+            first_name="Ivan"
+            last_name="Demchenko"
+            birthdate="1998-04-25"
+            sex="M"
+            updated_at="2021-03-02"
+    />
+    <person
+            id="2"
+            first_name="Ivan"
+            last_name="Adamec"
+            title_after="Dis."
+            birthdate="1963-07-02"
+            sex="M"
+            updated_at="2021-03-02"
+    />
+    <organ
+            id="1"
+            short_name="Praha"
+            name_cz="Hlavni mesto Praha"
+            date_from="2021-07-04"
+    />
+    <organ
+            id="2"
+            short_name="SPOLU"
+            name_cz="SPOLU"
+            date_from="2020-04-03"
+    />
+    <organ
+            id="3"
+            short_name="Period 2021"
+            name_cz="Period 2021"
+            date_from="2021-09-02"
+    />
+</dataset>

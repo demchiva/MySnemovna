@@ -48,7 +48,6 @@ class RestMeetingsTest extends AbstractSnemovnaTest {
         assertArrayEquals(expected.stream().toArray(), resultList.stream().toArray());
     }
 
-
     @Test
     void testGetMeetingsBadRequest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/meetings")

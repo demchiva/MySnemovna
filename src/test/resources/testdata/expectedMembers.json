@@ -1,0 +1,45 @@
+{
+  "content": [
+    {
+      "memberId": 1,
+      "photo": "https://www.psp.cz/eknih/cdrom/2021ps/eknih/2021ps/poslanci/i1.jpg",
+      "name": "Bc. Ivan Demchenko",
+      "party": "SPOLU",
+      "region": "Hlavni mesto Praha",
+      "dateFrom": "2021-09-02"
+    },
+    {
+      "memberId": 2,
+      "photo": "https://www.psp.cz/eknih/cdrom/2021ps/eknih/2021ps/poslanci/i2.jpg",
+      "name": "Ivan Adamec Dis.",
+      "party": "SPOLU",
+      "region": "Hlavni mesto Praha",
+      "dateFrom": "2021-09-02"
+    }
+  ],
+  "pageable": {
+    "sort": {
+      "empty": false,
+      "unsorted": false,
+      "sorted": true
+    },
+    "offset": 0,
+    "pageNumber": 0,
+    "pageSize": 10,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": true,
+  "totalPages": 1,
+  "totalElements": 2,
+  "first": true,
+  "size": 10,
+  "number": 0,
+  "sort": {
+    "empty": false,
+    "unsorted": false,
+    "sorted": true
+  },
+  "numberOfElements": 2,
+  "empty": false
+}

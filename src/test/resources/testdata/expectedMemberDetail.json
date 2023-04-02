@@ -1,0 +1,19 @@
+{
+  "memberId": 1,
+  "photo": "https://www.psp.cz/eknih/cdrom/2021ps/eknih/2021ps/poslanci/i1.jpg",
+  "name": "Bc. Ivan Demchenko",
+  "party": "SPOLU",
+  "region": "Hlavni mesto Praha",
+  "dateFrom": "2021-09-02",
+  "officeAddress": {
+    "street": "Sokolovska 1",
+    "municipality": "Praha 8",
+    "zip": "186 00",
+    "phone": "+420 777 777 777"
+  },
+  "ownPageUrl": "https://google.com",
+  "facebook": "https://facebook.com",
+  "pspUrl": "https://www.psp.cz/sqw/detail.sqw?id=1",
+  "email": "demchiva@cvut.cz",
+  "birthDate": "1998-04-25"
+}

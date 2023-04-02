@@ -1,0 +1,47 @@
+{
+  "content": [
+    {
+      "voteId": 1,
+      "result": "A",
+      "name": "Votes about parliament members salaries",
+      "aye": 150,
+      "no": 20,
+      "abstained": 30,
+      "date": "2022-04-25T11:20:33"
+    },
+    {
+      "voteId": 2,
+      "result": "B",
+      "name": "Votes about parliament members salaries 2",
+      "aye": 90,
+      "no": 70,
+      "abstained": 10,
+      "date": "2022-04-25T11:30:33"
+    }
+  ],
+  "pageable": {
+    "sort": {
+      "empty": false,
+      "sorted": true,
+      "unsorted": false
+    },
+    "offset": 0,
+    "pageNumber": 0,
+    "pageSize": 10,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": true,
+  "totalPages": 1,
+  "totalElements": 2,
+  "first": true,
+  "size": 10,
+  "number": 0,
+  "sort": {
+    "empty": false,
+    "sorted": true,
+    "unsorted": false
+  },
+  "numberOfElements": 2,
+  "empty": false
+}
