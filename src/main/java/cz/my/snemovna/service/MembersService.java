@@ -42,8 +42,6 @@ public class MembersService implements IMembersService {
     private final VoteRepository voteRepository;
     private final UrlUtils urlUtils;
 
-    // TODO retrieve from db could be optimized. Retrieve only important fields, not all!!
-    // TODO cela database se smaze a nacte. Implementovat nejaky check a update pouze na data ktere chybi.
     @Override
     public Page<MemberDto> getMembers(@Nullable final String search, @NotNull final Pageable page) {
         final Page<ParliamentMember> members = getMembersListInternal(search, page);

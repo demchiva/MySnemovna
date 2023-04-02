@@ -12,8 +12,6 @@ import org.springframework.data.repository.query.Param;
  */
 public interface ParliamentMemberRepository extends JpaRepository<ParliamentMember, Long> {
 
-    // TODO join could be in sql view.
-    // TODO like can be also used with endWith and contain.
     @Query("select pm " +
             "from ParliamentMember pm " +
             "join Person person on pm.personId = person.id " +
