@@ -9,5 +9,6 @@ import java.time.LocalDateTime;
 public record VoteDetailDto(Long voteId, String result, Integer aye,
                             Integer no, Integer abstained, LocalDateTime date,
                             Long voteNumber, Long pointNumber, Integer quorum,
-                            String psUrl, String longName) implements Serializable {
+                            String psUrl, String longName, String pointName,
+                            String pointState, String pointType) implements Serializable {
 }

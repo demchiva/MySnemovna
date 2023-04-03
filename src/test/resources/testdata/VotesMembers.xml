@@ -119,4 +119,31 @@
             name_cz="Period 2021"
             date_from="2021-09-02"
     />
+    <meeting
+            id="1"
+            agenda_type="0"
+            organ_id="173"
+            meeting_number="22"
+            date_from="2021-10-01 10:20"
+            date_to="2021-10-02 11:00"
+            updated_at="2021-09-02 12:42:54.432626"
+    />
+    <meeting_point
+            id="1"
+            meeting_id="1"
+            point_number="11"
+            full_name="Point full name"
+            type_id="1"
+            agenda_type="1"
+            state_id="1"
+    />
+    <meeting_point
+            id="2"
+            meeting_id="2"
+            point_number="12"
+            full_name="Point full name 2"
+            type_id="7"
+            agenda_type="1"
+            state_id="1"
+    />
 </dataset>

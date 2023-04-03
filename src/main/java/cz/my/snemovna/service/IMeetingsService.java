@@ -3,6 +3,7 @@ package cz.my.snemovna.service;
 import cz.my.snemovna.dto.meetings.MeetingAgendaType;
 import cz.my.snemovna.dto.meetings.MeetingDetailDto;
 import cz.my.snemovna.dto.meetings.MeetingDto;
+import cz.my.snemovna.jpa.model.meetings.MeetingPoint;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -25,4 +26,11 @@ public interface IMeetingsService {
      * @return the meeting detail.
      */
     MeetingDetailDto getMeeting(Long meetingId, MeetingAgendaType type);
+
+    /**
+     * The method get meeting point type.
+     * @param point meeting point.
+     * @return the meeting point type.
+     */
+    String getType(MeetingPoint point);
 }

@@ -1,13 +1,19 @@
 package cz.my.snemovna.service;
 
-import cz.my.snemovna.dto.votes.VoteMembersDto;
 import cz.my.snemovna.dto.votes.VoteDetailDto;
 import cz.my.snemovna.dto.votes.VoteDto;
+import cz.my.snemovna.dto.votes.VoteMembersDto;
+import cz.my.snemovna.jpa.model.meetings.Meeting;
+import cz.my.snemovna.jpa.model.meetings.MeetingPoint;
+import cz.my.snemovna.jpa.model.meetings.MeetingPointState;
 import cz.my.snemovna.jpa.model.members.Organ;
 import cz.my.snemovna.jpa.model.members.ParliamentMember;
 import cz.my.snemovna.jpa.model.members.Person;
 import cz.my.snemovna.jpa.model.votes.MemberVotes;
 import cz.my.snemovna.jpa.model.votes.Vote;
+import cz.my.snemovna.jpa.repository.meetings.MeetingPointRepository;
+import cz.my.snemovna.jpa.repository.meetings.MeetingPointStateRepository;
+import cz.my.snemovna.jpa.repository.meetings.MeetingRepository;
 import cz.my.snemovna.jpa.repository.members.OrganRepository;
 import cz.my.snemovna.jpa.repository.members.ParliamentMemberRepository;
 import cz.my.snemovna.jpa.repository.members.PersonRepository;
@@ -27,6 +33,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static cz.my.snemovna.dto.meetings.MeetingAgendaType.APPROVED;
+
 @Service
 @RequiredArgsConstructor
 public class VotesService implements IVotesService {
@@ -38,6 +46,10 @@ public class VotesService implements IVotesService {
     private final OrganRepository organRepository;
     private final UrlUtils urlUtils;
     private final IMembersService membersService;
+    private final MeetingPointStateRepository meetingPointStateRepository;
+    private final MeetingPointRepository meetingPointRepository;
+    private final IMeetingsService meetingsService;
+    private final MeetingRepository meetingRepository;
 
     @Override
     public Page<VoteDto> getVotes(@NotNull final Pageable pageable) {
@@ -58,10 +70,27 @@ public class VotesService implements IVotesService {
 
     @Override
     public VoteDetailDto getVote(@NotNull final Long voteId) {
-        return voteRepository.findById(voteId).map(this::convertVoteToDetailDto).orElseThrow();
+        final Vote vote = voteRepository.findById(voteId).orElseThrow();
+
+        // Find the meeting of the organ (PS). Typically, return proposal and approved with same ids.
+        final List<Meeting> meetings = meetingRepository.findByMeetingNumberAndOrganId(vote.getMeetingNumber(), vote.getOrganId());
+        if (meetings == null || meetings.isEmpty()) {
+            throw new NoSuchElementException("Meeting not found for vote.");
+        }
+
+        final List<MeetingPoint> points = meetingPointRepository
+                .findByPointNumberAndAgendaTypeAndMeetingId(vote.getPointNumber(), APPROVED.getType(), meetings.get(0).getId().getId());
+        if (points == null || points.isEmpty()) {
+            throw new NoSuchElementException("Meeting point not found for vote.");
+        }
+
+        final MeetingPointState pointState = points.get(0).getStateId() == null
+                ? null
+                : meetingPointStateRepository.findById(points.get(0).getStateId()).orElse(null);
+        return convertVoteToDetailDto(vote, points.get(0), pointState);
     }
 
-    private VoteDetailDto convertVoteToDetailDto(final Vote vote) {
+    private VoteDetailDto convertVoteToDetailDto(final Vote vote, final MeetingPoint point, final MeetingPointState pointState) {
         return new VoteDetailDto(
                 vote.getId(),
                 vote.getResult(),
@@ -73,7 +102,10 @@ public class VotesService implements IVotesService {
                 vote.getPointNumber(),
                 vote.getQuorum(),
                 urlUtils.getVoteUrl(vote.getId()),
-                vote.getLongName()
+                vote.getLongName(),
+                point.getFullName(),
+                pointState != null ? pointState.getDescription() : null,
+                meetingsService.getType(point)
         );
     }
 

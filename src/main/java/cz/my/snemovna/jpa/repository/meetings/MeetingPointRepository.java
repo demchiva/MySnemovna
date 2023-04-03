@@ -11,4 +11,6 @@ import java.util.List;
 public interface MeetingPointRepository extends JpaRepository<MeetingPoint, Long> {
 
     List<MeetingPoint> findByMeetingIdAndAgendaType(Long meetingId, Integer type);
+
+    List<MeetingPoint> findByPointNumberAndAgendaTypeAndMeetingId(Long pointNumber, Integer agendaType, Long meetingId);
 }
