@@ -78,8 +78,9 @@ public class VotesService implements IVotesService {
             throw new NoSuchElementException("Meeting not found for vote.");
         }
 
+        final Meeting meeting = meetings.get(0);
         final List<MeetingPoint> points = meetingPointRepository
-                .findByPointNumberAndAgendaTypeAndMeetingId(vote.getPointNumber(), APPROVED.getType(), meetings.get(0).getId().getId());
+                .findByPointNumberAndAgendaTypeAndMeetingId(vote.getPointNumber(), APPROVED.getType(), meeting.getId().getId());
         if (points == null || points.isEmpty()) {
             throw new NoSuchElementException("Meeting point not found for vote.");
         }
@@ -87,10 +88,11 @@ public class VotesService implements IVotesService {
         final MeetingPointState pointState = points.get(0).getStateId() == null
                 ? null
                 : meetingPointStateRepository.findById(points.get(0).getStateId()).orElse(null);
-        return convertVoteToDetailDto(vote, points.get(0), pointState);
+        return convertVoteToDetailDto(vote, points.get(0), pointState, meeting);
     }
 
-    private VoteDetailDto convertVoteToDetailDto(final Vote vote, final MeetingPoint point, final MeetingPointState pointState) {
+    private VoteDetailDto convertVoteToDetailDto(final Vote vote, final MeetingPoint point,
+                                                 final MeetingPointState pointState, final Meeting meeting) {
         return new VoteDetailDto(
                 vote.getId(),
                 vote.getResult(),
@@ -105,7 +107,8 @@ public class VotesService implements IVotesService {
                 vote.getLongName(),
                 point.getFullName(),
                 pointState != null ? pointState.getDescription() : null,
-                meetingsService.getType(point)
+                meetingsService.getType(point),
+                meeting.getMeetingNumber()
         );
     }
 
