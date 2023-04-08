@@ -79,7 +79,7 @@ flyway {
 }
 
 bootRun {
-	args = ["--spring.profiles.active=local"]
+//	args = ["--spring.profiles.active=local"]
 }
 
 tasks.named('test') {

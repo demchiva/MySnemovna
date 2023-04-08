@@ -44,7 +44,8 @@ public class UrlUtils {
      * @return member photo url.
      */
     public String getMemberPhotoUrl(final int year, final Long personId) {
-        return String.format("https://www.psp.cz/eknih/cdrom/%sps/eknih/%sps/poslanci/i%s.jpg", year, year, personId);
+        return String.format("https://www.psp.cz/eknih/cdrom/%sps/eknih/%sps/poslanci/i%s.jpg", year, year, personId)
+                .replace("1992", "1993"); // fix old years
     }
 
     /**
