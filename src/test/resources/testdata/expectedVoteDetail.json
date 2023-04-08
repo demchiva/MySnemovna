@@ -11,5 +11,6 @@
   "psUrl": "https://www.psp.cz/sqw/hlasy.sqw?g=1&l=cz",
   "longName": "Votes about parliament members salaries",
   "pointName": "Point full name",
-  "pointType": "1. čtení"
+  "pointType": "1. čtení",
+  "meetingNumber": 22
 }

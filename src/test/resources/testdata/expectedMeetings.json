@@ -4,6 +4,7 @@
       "meetingId": 3,
       "meetingNumber": 22,
       "date": "10:20 01.10.2021 - 11:00 02.10.2021",
+      "type": "Řádná",
       "organName": "Organ name",
       "dateFrom": "2021-10-01T10:20:00",
       "dateTo": "2021-10-02T11:00:00"
@@ -12,6 +13,7 @@
       "meetingId": 1,
       "meetingNumber": 22,
       "date": "10:20 01.10.2021 - 11:00 02.10.2021",
+      "type": "Řádná",
       "organName": "Organ name",
       "dateFrom": "2021-10-01T10:20:00",
       "dateTo": "2021-10-02T11:00:00"
@@ -20,8 +22,8 @@
   "pageable": {
     "sort": {
       "empty": false,
-      "sorted": true,
-      "unsorted": false
+      "unsorted": false,
+      "sorted": true
     },
     "offset": 0,
     "pageNumber": 0,
@@ -37,8 +39,8 @@
   "number": 0,
   "sort": {
     "empty": false,
-    "sorted": true,
-    "unsorted": false
+    "unsorted": false,
+    "sorted": true
   },
   "numberOfElements": 2,
   "empty": false

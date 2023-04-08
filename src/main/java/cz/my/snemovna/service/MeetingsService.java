@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.util.Optional.ofNullable;
+
 @Service
 @RequiredArgsConstructor
 public class MeetingsService implements IMeetingsService {
@@ -44,6 +46,12 @@ public class MeetingsService implements IMeetingsService {
             Tuple.of(List.of(13), "Vráceno prezidentem"),
             Tuple.of(List.of(14), "Vráceno Senátem"),
             Tuple.of(List.of(10), "Zkrácené jednání")
+    );
+
+    private static final Integer DEFAULT_MEETING_TYPE = 1;
+    private static final Map<Integer, String> MEETING_TYPES = Map.of(
+            1, "Řádná",
+            2, "Mimořádná"
     );
 
     private static final int MEETING_POINT_TYPES_INTERPELLATION_ANSWER = 6;
@@ -87,7 +95,10 @@ public class MeetingsService implements IMeetingsService {
                 meeting.getMeetingNumber(),
                 state != null ? state.getState() : null,
                 getDate(meeting, state),
-                state != null ? state.getType() : null,
+                ofNullable(state)
+                        .map(MeetingState::getType)
+                        .map(MEETING_TYPES::get)
+                        .orElse(MEETING_TYPES.get(DEFAULT_MEETING_TYPE)),
                 organ.getShortName(),
                 safeParseDateWithHours(meeting.getDateFrom()),
                 safeParseDateWithHours(meeting.getDateTo())

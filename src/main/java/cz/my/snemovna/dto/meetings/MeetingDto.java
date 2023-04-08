@@ -6,6 +6,6 @@ import java.time.LocalDateTime;
  * The dto class for meeting listing.
  */
 public record MeetingDto(Long meetingId, Long meetingNumber, Integer state,
-                         String date, Integer type, String organName,
+                         String date, String type, String organName,
                          LocalDateTime dateFrom, LocalDateTime dateTo) {
 }
