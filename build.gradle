@@ -72,9 +72,10 @@ dependencies {
 }
 
 flyway {
-	url = 'jdbc:postgresql://localhost:5432/snemovna'
-	user = 'postgres'
-	password = 'admin'
+	url = 'jdbc:postgresql://ec2-52-215-68-14.eu-west-1.compute.amazonaws.com:5432/dase1gj0s88s96'
+	user = 'wihhgrxgdrozun'
+	password = '27bc9b1940ce2d7beb38d6b53acb91a9ad48132ca411b68f5412d2d607a47316'
+	cleanDisabled = false
 }
 
 bootRun {
