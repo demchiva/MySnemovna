@@ -146,4 +146,8 @@
             agenda_type="1"
             state_id="1"
     />
+    <meeting_point_state
+            id="1"
+            description="Meeting point description"
+    />
 </dataset>
