@@ -11,7 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -50,7 +51,8 @@ public abstract class AbstractSourceParser<T> implements SourceParser {
     @SneakyThrows
     protected void parseAndSave(@NotNull final String dirName, @NotNull final String sourceName) {
         final String sourcePath = createSourcePath(dirName, sourceName);
-        try (BufferedReader reader = new BufferedReader(new FileReader(sourcePath))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+                new FileInputStream(sourcePath), "Windows-1250"))) {
             List<Object[]> items = new ArrayList<>(BATCH_SIZE);
             String line = reader.readLine();
             while (line != null) {
