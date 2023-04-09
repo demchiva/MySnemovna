@@ -18,11 +18,23 @@ public interface ParliamentMemberRepository extends JpaRepository<ParliamentMemb
             "join Organ party on pm.partyId = party.id " +
             "join Organ region on pm.regionId = region.id " +
             "join Organ period on pm.periodId = period.id " +
-            "where lower(person.firstName) like lower(concat(:search, '%')) " +
+            "where lower(person.firstName) like lower(concat(:search, '%')) " + // Strings starts with
             "or lower(person.lastName) like lower(concat(:search, '%')) " +
             "or lower(party.nameCz) like lower(concat(:search, '%')) " +
             "or lower(region.nameCz) like lower(concat(:search, '%')) " +
             "or str(period.dateFrom) like lower(concat(:search, '%')) " +
-            "or str(period.dateTo) like lower(concat(:search, '%'))")
+            "or str(period.dateTo) like lower(concat(:search, '%')) " +
+            "or lower(person.firstName) like lower(concat('%', :search)) " + // Strings ends with
+            "or lower(person.lastName) like lower(concat('%', :search)) " +
+            "or lower(party.nameCz) like lower(concat('%', :search)) " +
+            "or lower(region.nameCz) like lower(concat('%', :search)) " +
+            "or str(period.dateFrom) like lower(concat('%', :search)) " +
+            "or str(period.dateTo) like lower(concat('%', :search))" +
+            "or lower(person.firstName) like lower(concat('%', :search, '%')) " + // Strings contains
+            "or lower(person.lastName) like lower(concat('%', :search, '%')) " +
+            "or lower(party.nameCz) like lower(concat('%', :search, '%')) " +
+            "or lower(region.nameCz) like lower(concat('%', :search, '%')) " +
+            "or str(period.dateFrom) like lower(concat('%', :search, '%')) " +
+            "or str(period.dateTo) like lower(concat('%', :search, '%'))")
     Page<ParliamentMember> findBySearch(@Param("search") String search, Pageable page);
 }
