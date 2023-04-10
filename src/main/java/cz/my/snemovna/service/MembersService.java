@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
 public class MembersService implements IMembersService {
 
     private static final String EMPTY_VALUE = "\\ ";
+    private static final LocalDate UNKNOWN_BIRTH_DATE = LocalDate.of(1900, 1, 1);
 
     private final ParliamentMemberRepository memberRepository;
     private final PersonRepository personRepository;
@@ -139,7 +141,7 @@ public class MembersService implements IMembersService {
                 isAcceptableValue(member.getFacebook()) ? member.getFacebook() : null,
                 urlUtils.getPspMemberUrl(person.getId()),
                 isAcceptableValue(member.getEmail()) ? member.getEmail() : null,
-                person.getBirthdate()
+                !UNKNOWN_BIRTH_DATE.equals(person.getBirthdate()) ? person.getBirthdate() : null
         );
     }
 
@@ -174,7 +176,7 @@ public class MembersService implements IMembersService {
 
     private MemberVotesDto createMemberVotesDto(MemberVotes memberVotes, Vote vote) {
         return new MemberVotesDto(
-                vote.getShortName(),
+                vote.getLongName(),
                 LocalDateTime.of(vote.getDate(), vote.getTime()),
                 memberVotes.getResult()
         );
