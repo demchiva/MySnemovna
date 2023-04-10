@@ -6,13 +6,13 @@
     "meetingId": 718,
     "typeId": 0,
     "pointNumber": 0,
-    "fullName": "Po�ad sch�ze",
+    "fullName": "Pořad schůze",
     "nameSuffix": " ",
     "note": "",
     "stateId": 1,
     "shortNote": "",
     "type": 0,
-    "shortName": "Po�ad sch�ze"
+    "shortName": "Pořad schůze"
   },
   {
     "id": 66760,
@@ -22,13 +22,13 @@
     "printId": 42127,
     "typeId": 1,
     "pointNumber": 1,
-    "fullName": "N�vrh poslance Andreje Babi�e na vyd�n� z�kona, kter�m se m�n� z�kon �. 236/1995 Sb., o platu a dal��ch n�le�itostech spojen�ch s v�konem funkce p�edstavitel� st�tn� moci a n�kter�ch st�tn�ch org�n� a soudc� a poslanc� Evropsk�ho parlamentu, ve zn�n� pozd�j��ch p�edpis� ",
-    "nameSuffix": "/sn�movn� tisk 54/",
+    "fullName": "Návrh poslance Andreje Babiše na vydání zákona, kterým se mění zákon č. 236/1995 Sb., o platu a dalších náležitostech spojených s výkonem funkce představitelů státní moci a některých státních orgánů a soudců a poslanců Evropského parlamentu, ve znění pozdějších předpisů ",
+    "nameSuffix": "/sněmovní tisk 54/",
     "note": "",
     "stateId": 3,
     "mode": 1,
     "shortNote": "",
     "type": 0,
-    "shortName": "p plat p�edst.st.moci"
+    "shortName": "p plat předst.st.moci"
   }
 ]
