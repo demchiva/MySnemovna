@@ -35,7 +35,7 @@ public class RestMeetings implements IRestMeetings {
     @Override
     public Page<MeetingDto> getMeetings(@Valid final PageApiRequest page) {
         return meetingsService.getMeetings(PageRequest.of(page.getPage(), page.getSize(),
-                page.getDirection(), page.getProperty()));
+                page.getDirection(), page.getProperty().split(",")));
     }
 
     /**
