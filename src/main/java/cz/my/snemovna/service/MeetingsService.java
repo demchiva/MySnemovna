@@ -157,9 +157,17 @@ public class MeetingsService implements IMeetingsService {
     private MeetingDetailDto.MeetingPointDto createPointDto(final MeetingPoint point, final MeetingPointState state) {
         return new MeetingDetailDto.MeetingPointDto(
                 point.getFullName(),
-                state != null ? state.getDescription() : null,
+                state != null ? capitalize(state.getDescription().trim()) : null,
                 getType(point)
         );
+    }
+
+    public static String capitalize(final String str) {
+        if (str == null || str.length() == 0) {
+            return str;
+        }
+
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
     @Override
