@@ -36,7 +36,9 @@ import static java.util.Optional.ofNullable;
 @RequiredArgsConstructor
 public class MeetingsService implements IMeetingsService {
 
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy");
+    private static final String EMPTY_VALUE = "\\";
+
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static final DateTimeFormatter FORMATTER_HOURS = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     private static final List<Tuple<List<Integer>, String>> MEETING_POINT_TYPES = List.of(
@@ -93,7 +95,7 @@ public class MeetingsService implements IMeetingsService {
         return new MeetingDto(
                 meeting.getId().getId(),
                 meeting.getMeetingNumber(),
-                state != null ? state.getState() : null,
+                getState(state),
                 getDate(meeting, state),
                 ofNullable(state)
                         .map(MeetingState::getType)
@@ -106,8 +108,11 @@ public class MeetingsService implements IMeetingsService {
     }
 
     private String getDate(final Meeting meeting, final MeetingState state) {
-       return state != null && state.getMeetingStatusText2() != null
-               ? state.getMeetingStatusText2()
+       return state != null
+               && state.getMeetingBeginText() != null
+               && !state.getMeetingBeginText().isEmpty()
+               && !EMPTY_VALUE.equals(state.getMeetingBeginText().trim())
+               ? state.getMeetingBeginText()
                : getDateFromMeeting(meeting);
     }
 
@@ -117,8 +122,18 @@ public class MeetingsService implements IMeetingsService {
         }
 
         return safeParseDateWithHours(meeting.getDateFrom()).format(DATE_FORMAT)
-                + " - "
-                + safeParseDateWithHours(meeting.getDateTo()).format(DATE_FORMAT);
+                + "-"
+                + safeParseDateWithHours(meeting.getDateTo()).format(DateTimeFormatter.ofPattern("HH:mm"));
+    }
+
+    private String getState(final MeetingState state) {
+        if (state == null || state.getMeetingStatusText2() == null
+                || state.getMeetingStatusText2().isEmpty()
+                || EMPTY_VALUE.equals(state.getMeetingStatusText2().trim())) {
+            return null;
+        }
+
+        return state.getMeetingStatusText2();
     }
 
     @Override

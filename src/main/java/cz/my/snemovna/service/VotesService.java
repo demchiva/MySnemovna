@@ -40,6 +40,8 @@ import static cz.my.snemovna.dto.meetings.MeetingAgendaType.APPROVED;
 @RequiredArgsConstructor
 public class VotesService implements IVotesService {
 
+    private static final int MAX_MEMBERS_COUNT = 200;
+
     private final MemberVotesRepository memberVotesRepository;
     private final VoteRepository voteRepository;
     private final ParliamentMemberRepository parliamentMemberRepository;
@@ -64,7 +66,7 @@ public class VotesService implements IVotesService {
                 vote.getLongName(),
                 vote.getAye(),
                 vote.getNo(),
-                vote.getAbstained(),
+                MAX_MEMBERS_COUNT - (vote.getAye() + vote.getNo()),
                 LocalDateTime.of(vote.getDate(), vote.getTime())
         );
     }
@@ -99,7 +101,7 @@ public class VotesService implements IVotesService {
                 vote.getResult(),
                 vote.getAye(),
                 vote.getNo(),
-                vote.getAbstained(),
+                MAX_MEMBERS_COUNT - (vote.getAye() + vote.getNo()),
                 LocalDateTime.of(vote.getDate(), vote.getTime()),
                 vote.getVoteNumber(),
                 vote.getPointNumber(),
