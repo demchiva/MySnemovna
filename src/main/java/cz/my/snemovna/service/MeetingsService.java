@@ -57,7 +57,7 @@ public class MeetingsService implements IMeetingsService {
             2, "Mimořádná"
     );
 
-    private static final int MEETING_POINT_TYPES_INTERPELLATION_ANSWER = 6;
+    private static final Integer MEETING_POINT_TYPES_INTERPELLATION_ANSWER = 6;
 
     private final MeetingPointRepository meetingPointRepository;
     private final MeetingPointStateRepository meetingPointStateRepository;
@@ -149,7 +149,7 @@ public class MeetingsService implements IMeetingsService {
         return new MeetingDetailDto(
                 meetingPoints
                         .stream()
-                        .filter(e -> MEETING_POINT_TYPES_INTERPELLATION_ANSWER != e.getTypeId())
+                        .filter(e -> MEETING_POINT_TYPES_INTERPELLATION_ANSWER.equals(e.getTypeId()))
                         .filter(e -> e.getPointNumber() >= MINIMAL_MEETING_POINT_ID)
                         .map(e -> createPointDto(e, states.getOrDefault(e.getStateId(), null)))
                         .toList()
