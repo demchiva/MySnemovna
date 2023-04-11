@@ -34,7 +34,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static cz.my.snemovna.dto.meetings.MeetingAgendaType.APPROVED;
+import static cz.my.snemovna.dto.meetings.MeetingAgendaType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -82,10 +82,15 @@ public class VotesService implements IVotesService {
         }
 
         final Meeting meeting = meetings.get(0);
-        final List<MeetingPoint> points = meetingPointRepository
+        List<MeetingPoint> points = meetingPointRepository
                 .findByPointNumberAndAgendaTypeAndMeetingId(vote.getPointNumber(), APPROVED.getType(), meeting.getId().getId());
         if (points == null || points.isEmpty()) {
-            throw new NoSuchElementException("Meeting point not found for vote.");
+            points = meetingPointRepository
+                    .findByPointNumberAndAgendaTypeAndMeetingId(vote.getPointNumber(), PROPOSED.getType(), meeting.getId().getId());
+
+            if (points == null || points.isEmpty()) {
+                throw new NoSuchElementException("Meeting point not found for vote.");
+            }
         }
 
         final MeetingPointState pointState = points.get(0).getStateId() == null
