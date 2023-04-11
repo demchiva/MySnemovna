@@ -51,6 +51,7 @@ public class MeetingsService implements IMeetingsService {
     );
 
     private static final Integer DEFAULT_MEETING_TYPE = 1;
+    private static final Long MINIMAL_MEETING_POINT_ID = 1L;
     private static final Map<Integer, String> MEETING_TYPES = Map.of(
             1, "Řádná",
             2, "Mimořádná"
@@ -149,6 +150,7 @@ public class MeetingsService implements IMeetingsService {
                 meetingPoints
                         .stream()
                         .filter(e -> MEETING_POINT_TYPES_INTERPELLATION_ANSWER != e.getTypeId())
+                        .filter(e -> e.getId() >= MINIMAL_MEETING_POINT_ID)
                         .map(e -> createPointDto(e, states.getOrDefault(e.getStateId(), null)))
                         .toList()
         );
