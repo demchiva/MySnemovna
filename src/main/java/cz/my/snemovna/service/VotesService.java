@@ -54,7 +54,7 @@ public class VotesService implements IVotesService {
 
     @Override
     public Page<VoteDto> getVotes(@NotNull final Pageable pageable) {
-        return voteRepository.findAll(pageable).map(this::convertVoteToDto);
+        return voteRepository.findAllExceptAgendas(pageable).map(this::convertVoteToDto);
     }
 
     private VoteDto convertVoteToDto(final Vote vote) {
@@ -135,7 +135,7 @@ public class VotesService implements IVotesService {
 
             this.membersVotes = memberVotesRepository.findByVotesId(voteId)
                     .stream()
-                    .collect(Collectors.toMap(e -> e.getMemberId().getMemberId(), Function.identity()));
+                    .collect(Collectors.toMap(e -> e.getId().getMemberId(), Function.identity()));
             this.members = parliamentMemberRepository.findAllById(membersVotes.keySet())
                     .stream()
                     .collect(Collectors.toMap(ParliamentMember::getId, Function.identity()));
@@ -163,7 +163,7 @@ public class VotesService implements IVotesService {
         }
 
         private VoteMembersDto createMemberDto(@NotNull final MemberVotes memberVotes) {
-            final ParliamentMember member = members.get(memberVotes.getMemberId().getMemberId());
+            final ParliamentMember member = members.get(memberVotes.getId().getMemberId());
             final Person person = persons.get(member.getPersonId());
             final Organ party = parties.get(member.getPartyId());
             return new VoteMembersDto(

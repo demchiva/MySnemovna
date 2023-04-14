@@ -12,9 +12,9 @@ import java.util.List;
  */
 public interface MemberVotesRepository extends JpaRepository<MemberVotes, MemberVotes.MemberVotesId> {
 
-    @Query("select mv from MemberVotes mv where mv.memberId.voteId = :voteId")
+    @Query("select mv from MemberVotes mv where mv.id.voteId = :voteId")
     List<MemberVotes> findByVotesId(@Param("voteId") Long voteId);
 
-    @Query("select mv from MemberVotes mv where mv.memberId.memberId = :memberId order by mv.memberId.voteId desc")
+    @Query("select mv from MemberVotes mv where mv.id.memberId = :memberId order by mv.id.voteId desc")
     List<MemberVotes> findByMemberId(@Param("memberId") Long memberId);
 }

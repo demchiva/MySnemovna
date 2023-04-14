@@ -35,6 +35,24 @@
             long_name="Votes about parliament members salaries 2"
             short_name="Votes about p.m. salar. 2"
     />
+    <vote
+            id="3"
+            organ_id="173"
+            meeting_number="22"
+            vote_number="33"
+            point_number="0"
+            date="2022-04-25"
+            time="11:20:33"
+            aye="150"
+            no="20"
+            abstained="30"
+            was_not_on_vote="0"
+            logged_in="180"
+            quorum="100"
+            result="A"
+            long_name="Porad schuze"
+            short_name="Porad schuze"
+    />
     <member_votes
             member_id="1"
             vote_id="1"

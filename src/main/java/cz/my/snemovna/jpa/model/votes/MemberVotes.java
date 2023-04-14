@@ -21,7 +21,7 @@ import java.io.Serializable;
 public class MemberVotes implements Serializable {
 
     @EmbeddedId
-    private MemberVotesId memberId;
+    private MemberVotesId id;
 
     @Column(name = "result", length = 1)
     private String result;

@@ -163,18 +163,17 @@ public class MembersService implements IMembersService {
             throw new NoSuchElementException("Member not found.");
         }
 
-        final List<MemberVotes> memberVotes = memberVotesRepository.findByMemberId(memberId);
-        final Map<Long, Vote> votes = voteRepository
-                .findAllById(memberVotes.stream().map(e -> e.getMemberId().getVoteId()).toList())
+        final Map<Long, MemberVotes> memberVotes = memberVotesRepository.findByMemberId(memberId)
                 .stream()
-                .collect(Collectors.toMap(Vote::getId, Function.identity()));
-        return memberVotes
+                .collect(Collectors.toMap(e -> e.getId().getVoteId(), Function.identity()));
+        final List<Vote> votes = voteRepository.findAllExceptAgendas(memberVotes.keySet());
+        return votes
                 .stream()
-                .map(e -> createMemberVotesDto(e, votes.get(e.getMemberId().getVoteId())))
+                .map(e -> createMemberVotesDto(e, memberVotes.get(e.getId())))
                 .toList();
     }
 
-    private MemberVotesDto createMemberVotesDto(MemberVotes memberVotes, Vote vote) {
+    private MemberVotesDto createMemberVotesDto(final Vote vote, final MemberVotes memberVotes) {
         return new MemberVotesDto(
                 vote.getLongName(),
                 LocalDateTime.of(vote.getDate(), vote.getTime()),
