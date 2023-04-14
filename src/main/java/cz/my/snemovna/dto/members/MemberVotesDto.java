@@ -6,5 +6,5 @@ import java.time.LocalDateTime;
 /**
  * The dto class of members votes in member detail.
  */
-public record MemberVotesDto(String name, LocalDateTime date, String result) implements Serializable {
+public record MemberVotesDto(String name, LocalDateTime date, String result, Long voteId) implements Serializable {
 }

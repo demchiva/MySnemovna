@@ -158,7 +158,7 @@ public class VotesService implements IVotesService {
                     .values()
                     .stream()
                     .map(this::createMemberDto)
-                    .sorted(Comparator.comparing(VoteMembersDto::name))
+                    .sorted(Comparator.comparing(VoteMembersDto::memberId))
                     .toList();
         }
 
@@ -170,7 +170,8 @@ public class VotesService implements IVotesService {
                     membersService.getFullNameWithTitles(person).trim(),
                     party.getShortName(),
                     member.isPhoto() ? getPhotoUrl(period.getDateFrom().getYear(), person.getId()) : null,
-                    memberVotes.getResult()
+                    memberVotes.getResult(),
+                    memberVotes.getId().getMemberId()
             );
         }
 

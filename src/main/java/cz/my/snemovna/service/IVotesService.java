@@ -14,7 +14,7 @@ import java.util.List;
 public interface IVotesService {
 
     /**
-     * The method get votes list.
+     * The method get votes list. The agenda votes is filtered.
      * @param pageable the page.
      * @return the votes page.
      */
@@ -29,9 +29,9 @@ public interface IVotesService {
 
     /**
      * The method get info how members of parliament voted in the given vote.
+     * The result is sorted by member id.
      * @param voteId vote id.
      * @return the list of parliament member votes.
      */
     List<VoteMembersDto> getMembers(Long voteId);
-
 }

@@ -3,11 +3,13 @@
     "name": "Bc. Ivan Demchenko",
     "partyName": "SPOLU",
     "photoUrl": "https://www.psp.cz/eknih/cdrom/2021ps/eknih/2021ps/poslanci/i1.jpg",
-    "result": "A"
+    "result": "A",
+    "memberId": 1
   },
   {
     "name": "Ivan Adamec Dis.",
     "partyName": "SPOLU",
-    "result": "B"
+    "result": "B",
+    "memberId": 2
   }
 ]

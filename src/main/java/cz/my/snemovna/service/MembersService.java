@@ -177,7 +177,8 @@ public class MembersService implements IMembersService {
         return new MemberVotesDto(
                 vote.getLongName(),
                 LocalDateTime.of(vote.getDate(), vote.getTime()),
-                memberVotes.getResult()
+                memberVotes.getResult(),
+                vote.getId()
         );
     }
 

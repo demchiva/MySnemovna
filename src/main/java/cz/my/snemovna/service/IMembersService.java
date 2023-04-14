@@ -38,6 +38,7 @@ public interface IMembersService {
 
     /**
      * The method get info how given member of parliament voted.
+     * The result is sorted by vote id. Newest first.
      * @param memberId member id.
      * @return the list of parliament member votes.
      */
