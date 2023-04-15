@@ -166,7 +166,7 @@ public class MembersService implements IMembersService {
         final Map<Long, MemberVotes> memberVotes = memberVotesRepository.findByMemberId(memberId)
                 .stream()
                 .collect(Collectors.toMap(e -> e.getId().getVoteId(), Function.identity()));
-        final List<Vote> votes = voteRepository.findAllExceptAgendas(memberVotes.keySet());
+        final List<Vote> votes = voteRepository.findAllExceptAgendasById(memberVotes.keySet());
         return votes
                 .stream()
                 .map(e -> createMemberVotesDto(e, memberVotes.get(e.getId())))

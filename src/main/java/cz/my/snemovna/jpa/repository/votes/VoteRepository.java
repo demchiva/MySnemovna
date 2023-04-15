@@ -17,5 +17,5 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
     Page<Vote> findAllExceptAgendas(Pageable page);
 
     @Query("select v from Vote v where v.pointNumber > 0 and v.id in :ids order by v.id desc")
-    List<Vote> findAllExceptAgendas(Iterable<Long> ids);
+    List<Vote> findAllExceptAgendasById(Iterable<Long> ids);
 }
