@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
@@ -40,7 +39,7 @@ class RestMeetingsTest extends AbstractSnemovnaTest {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
-                .getContentAsString(Charset.defaultCharset());
+                .getContentAsString(StandardCharsets.UTF_8);
 
         final RestResponsePage<MeetingDto> resultList = objectMapper.readValue(responseJson, new TypeReference<>() {});
         final RestResponsePage<MeetingDto> expected = objectMapper.readValue(
