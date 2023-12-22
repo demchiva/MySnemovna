@@ -1,6 +1,5 @@
 package cz.my.snemovna.service;
 
-import com.google.cloud.Tuple;
 import cz.my.snemovna.dto.meetings.MeetingAgendaType;
 import cz.my.snemovna.dto.meetings.MeetingDetailDto;
 import cz.my.snemovna.dto.meetings.MeetingDto;
@@ -26,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -41,20 +41,20 @@ public class MeetingsService implements IMeetingsService {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static final DateTimeFormatter FORMATTER_HOURS = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    private static final List<Tuple<List<Integer>, String>> MEETING_POINT_TYPES = List.of(
-            Tuple.of(List.of(1, 7, 15, 17, 18, 40, 41), "1. čtení"),
-            Tuple.of(List.of(2, 3, 4), "2. čtení"),
-            Tuple.of(List.of(5), "3. čtení"),
-            Tuple.of(List.of(13), "Vráceno prezidentem"),
-            Tuple.of(List.of(14), "Vráceno Senátem"),
-            Tuple.of(List.of(10), "Zkrácené jednání")
+    private static final List<MeetingPointType> MEETING_POINT_TYPES = List.of(
+            new MeetingPointType(List.of(1, 7, 15, 17, 18, 40, 41), "meeting.pointType.first"),
+            new MeetingPointType(List.of(2, 3, 4), "meeting.pointType.second"),
+            new MeetingPointType(List.of(5), "meeting.pointType.third"),
+            new MeetingPointType(List.of(13), "meeting.pointType.returnedBy.president"),
+            new MeetingPointType(List.of(14), "meeting.pointType.returnedBy.senate"),
+            new MeetingPointType(List.of(10), "meeting.pointType.abbreviatedHearing")
     );
 
-    private static final Integer DEFAULT_MEETING_TYPE = 1;
+    private static final String DEFAULT_MEETING_TYPE_NAME = "meeting.type.ordinary";
     private static final Long MINIMAL_MEETING_POINT_ID = 1L;
     private static final Map<Integer, String> MEETING_TYPES = Map.of(
-            1, "Řádná",
-            2, "Mimořádná"
+            1, DEFAULT_MEETING_TYPE_NAME,
+            2, "meeting.type.extraordinary"
     );
 
     private static final Integer MEETING_POINT_TYPES_INTERPELLATION_ANSWER = 6;
@@ -64,6 +64,7 @@ public class MeetingsService implements IMeetingsService {
     private final MeetingStateRepository meetingStateRepository;
     private final MeetingRepository meetingRepository;
     private final OrganRepository organRepository;
+    private final Resources resources;
 
     @Override
     public Page<MeetingDto> getMeetings(@NotNull final Pageable page) {
@@ -98,10 +99,10 @@ public class MeetingsService implements IMeetingsService {
                 meeting.getMeetingNumber(),
                 getState(state),
                 getDate(meeting, state),
-                ofNullable(state)
+                getText(ofNullable(state)
                         .map(MeetingState::getType)
                         .map(MEETING_TYPES::get)
-                        .orElse(MEETING_TYPES.get(DEFAULT_MEETING_TYPE)),
+                        .orElse(DEFAULT_MEETING_TYPE_NAME)),
                 organ.getShortName(),
                 safeParseDateWithHours(meeting.getDateFrom()),
                 safeParseDateWithHours(meeting.getDateTo())
@@ -165,7 +166,7 @@ public class MeetingsService implements IMeetingsService {
     }
 
     public static String capitalize(final String str) {
-        if (str == null || str.length() == 0) {
+        if (str == null || str.isEmpty()) {
             return str;
         }
 
@@ -176,13 +177,20 @@ public class MeetingsService implements IMeetingsService {
     public String getType(final MeetingPoint point) {
         return MEETING_POINT_TYPES
                 .stream()
-                .filter(e -> e.x().contains(point.getTypeId()))
-                .map(Tuple::y)
+                .filter(e -> e.ids().contains(point.getTypeId()))
+                .map(MeetingPointType::name)
                 .findFirst()
+                .map(this::getText)
                 .orElse(null);
     }
 
     protected LocalDateTime safeParseDateWithHours(String value) {
         return value == null || value.isEmpty() ? null : LocalDateTime.parse(value, FORMATTER_HOURS);
     }
+
+    private String getText(final String propertyKey) {
+        return resources.getMySnemovnaText(new Locale("cs"), propertyKey);
+    }
+
+    private record MeetingPointType(List<Integer> ids, String name) {}
 }
