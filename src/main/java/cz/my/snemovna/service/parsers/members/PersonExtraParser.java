@@ -25,15 +25,18 @@ public class PersonExtraParser extends AbstractSourceParser<PersonExtra> {
     }
 
     @Override
-    protected Object[] convert(List<String> sourceData) {
-        return new Object[] {
-                Long.parseLong(sourceData.get(0)),
-                safeParseToLong(sourceData.get(1)),
-                safeParseToInteger(sourceData.get(2)),
-                safeParseToLong(sourceData.get(3)),
-                sourceData.get(4),
-                safeParseToLong(sourceData.get(5))
-        };
+    protected PersonExtra convert(List<String> sourceData) {
+        final PersonExtra personExtra = new PersonExtra();
+
+        personExtra.setId(Long.parseLong(sourceData.get(0)));
+        personExtra.setPersonId(safeParseToLong(sourceData.get(1)));
+        // personExtra.setOrganId(????);
+        personExtra.setType(safeParseToInteger(sourceData.get(2)));
+        personExtra.setDistrict(safeParseToLong(sourceData.get(3)));
+        personExtra.setParty(sourceData.get(4));
+        personExtra.setExternalId(safeParseToLong(sourceData.get(5)));
+
+        return personExtra;
     }
 
     @Override

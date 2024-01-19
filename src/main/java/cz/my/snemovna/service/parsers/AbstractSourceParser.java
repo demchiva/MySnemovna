@@ -1,9 +1,11 @@
 package cz.my.snemovna.service.parsers;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Table;
 import jakarta.persistence.metamodel.EntityType;
 import jakarta.persistence.metamodel.Metamodel;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +27,15 @@ import java.util.Scanner;
  * @param <T>
  */
 @Slf4j
+@Transactional
 public abstract class AbstractSourceParser<T> implements SourceParser {
 
     private static final int BATCH_SIZE = 100;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     protected final String tableName;
     protected final JdbcTemplate jdbcTemplate;
+    @PersistenceContext
+    protected final EntityManager entityManager;
 
     @Value("${base.loader.path}")
     protected String baseDestination;
@@ -40,6 +45,7 @@ public abstract class AbstractSourceParser<T> implements SourceParser {
                                    final EntityManager entityManager) {
         this.tableName = getTableName(entityManager, type);
         this.jdbcTemplate = jdbcTemplate;
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -53,12 +59,12 @@ public abstract class AbstractSourceParser<T> implements SourceParser {
         final String sourcePath = createSourcePath(dirName, sourceName);
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(
                 new FileInputStream(sourcePath), "Windows-1250"))) {
-            List<Object[]> items = new ArrayList<>(BATCH_SIZE);
+            List<T> items = new ArrayList<>(BATCH_SIZE);
             String line = reader.readLine();
             while (line != null) {
                 try(final Scanner s = new Scanner(line))  {
                     s.useDelimiter(UNL_COLUMN_DIVIDER);
-                    Object[] item = convert(s.tokens().toList());
+                    T item = convert(s.tokens().toList());
 
                     if (item != null) {
                         items.add(item);
@@ -82,13 +88,8 @@ public abstract class AbstractSourceParser<T> implements SourceParser {
         return 1;
     }
 
-    protected void save(List<Object[]> items) {
-        jdbcTemplate.batchUpdate(
-                String.format(
-                        "insert into %s(%s) values (%s)",
-                        tableName, getColumnsOrder(), getQueryPlaceholder(items.get(0))),
-                items
-        );
+    protected void save(List<T> items) {
+        items.forEach(entityManager::persist);
     }
 
     private String getTableName(final EntityManager entityManager, final Class<T> type) {
@@ -127,7 +128,7 @@ public abstract class AbstractSourceParser<T> implements SourceParser {
      * @param sourceData list of data represent one line of source file.
      * @return the one row db data in right format.
      */
-    protected abstract Object[] convert(List<String> sourceData);
+    protected abstract T convert(List<String> sourceData);
 
     /**
      * The method creates path to source file.

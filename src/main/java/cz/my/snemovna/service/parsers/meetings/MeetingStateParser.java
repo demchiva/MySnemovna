@@ -25,15 +25,17 @@ public class MeetingStateParser extends AbstractSourceParser<MeetingState> {
     }
 
     @Override
-    protected Object[] convert(List<String> sourceData) {
-        return new Object[] {
-                Long.parseLong(sourceData.get(0)),
-                safeParseToInteger(sourceData.get(1)),
-                safeParseToInteger(sourceData.get(2)),
-                sourceData.get(3),
-                sourceData.get(4),
-                sourceData.get(5)
-        };
+    protected MeetingState convert(List<String> sourceData) {
+        final MeetingState meetingState = new MeetingState();
+
+        meetingState.setMeetingId(Long.parseLong(sourceData.get(0)));
+        meetingState.setState(safeParseToInteger(sourceData.get(1)));
+        meetingState.setType(safeParseToInteger(sourceData.get(2)));
+        meetingState.setMeetingBeginText(sourceData.get(3));
+        meetingState.setMeetingStatusText(sourceData.get(4));
+        meetingState.setMeetingStatusText2(sourceData.get(5));
+
+        return meetingState;
     }
 
     @Override

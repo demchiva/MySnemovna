@@ -29,12 +29,16 @@ public class MemberVotesParser extends AbstractVoteWithYearSourceParser<MemberVo
     }
 
     @Override
-    protected Object[] convert(List<String> sourceData) {
-        return new Object[] {
-                Long.parseLong(sourceData.get(0)),
-                Long.parseLong(sourceData.get(1)),
-                sourceData.get(2)
-        };
+    protected MemberVotes convert(List<String> sourceData) {
+        final MemberVotes memberVotes = new MemberVotes();
+
+        final Long id = Long.parseLong(sourceData.get(0));
+        final Long voteId = Long.parseLong(sourceData.get(1));
+        final MemberVotes.MemberVotesId memberVotesId = new MemberVotes.MemberVotesId(id, voteId);
+        memberVotes.setId(memberVotesId);
+        memberVotes.setResult(sourceData.get(2));
+
+        return memberVotes;
     }
 
     @Override

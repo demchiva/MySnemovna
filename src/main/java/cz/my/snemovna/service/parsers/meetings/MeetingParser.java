@@ -1,6 +1,7 @@
 package cz.my.snemovna.service.parsers.meetings;
 
 import cz.my.snemovna.jpa.model.meetings.Meeting;
+import cz.my.snemovna.jpa.model.meetings.MeetingAgendaId;
 import cz.my.snemovna.service.parsers.AbstractSourceParser;
 import cz.my.snemovna.service.parsers.AgendaSource;
 import jakarta.persistence.EntityManager;
@@ -25,18 +26,20 @@ public class MeetingParser extends AbstractSourceParser<Meeting> {
     }
 
     @Override
-    protected Object[] convert(List<String> sourceData) {
+    protected Meeting convert(List<String> sourceData) {
         Integer agendaType = safeParseToInteger(sourceData.get(6));
         agendaType = agendaType == null ? 0 : agendaType;
-        return new Object[] {
-                Long.parseLong(sourceData.get(0)),
-                agendaType,
-                safeParseToLong(sourceData.get(1)),
-                safeParseToLong(sourceData.get(2)),
-                sourceData.get(3),
-                sourceData.get(4),
-                sourceData.get(5)
-        };
+        final Long id = Long.parseLong(sourceData.get(0));
+
+        Meeting meeting = new Meeting();
+        meeting.setId(new MeetingAgendaId(id, agendaType));
+        meeting.setOrganId(safeParseToLong(sourceData.get(1)));
+        meeting.setMeetingNumber(safeParseToLong(sourceData.get(2)));
+        meeting.setDateFrom(sourceData.get(3));
+        meeting.setDateTo(sourceData.get(4));
+        meeting.setUpdatedAt(sourceData.get(5));
+
+        return meeting;
     }
 
     @Override

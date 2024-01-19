@@ -25,26 +25,28 @@ public class VoteParser extends AbstractVoteWithYearSourceParser<Vote> {
     }
 
     @Override
-    protected Object[] convert(List<String> sourceData) {
-        return new Object[] {
-                Long.parseLong(sourceData.get(0)),
-                safeParseToLong(sourceData.get(1)),
-                safeParseToLong(sourceData.get(2)),
-                safeParseToLong(sourceData.get(3)),
-                safeParseToLong(sourceData.get(4)),
-                safeParseToLocalDate(sourceData.get(5)),
-                safeParseToLocalTime(sourceData.get(6)),
-                safeParseToInteger(sourceData.get(7)),
-                safeParseToInteger(sourceData.get(8)),
-                safeParseToInteger(sourceData.get(9)),
-                safeParseToInteger(sourceData.get(10)),
-                safeParseToInteger(sourceData.get(11)),
-                safeParseToInteger(sourceData.get(12)),
-                sourceData.get(13),
-                sourceData.get(14),
-                sourceData.get(15),
-                sourceData.get(16)
-        };
+    protected Vote convert(List<String> sourceData) {
+        final Vote vote = new Vote();
+
+        vote.setId(Long.parseLong(sourceData.get(0)));
+        vote.setOrganId(safeParseToLong(sourceData.get(1)));
+        vote.setMeetingNumber(safeParseToLong(sourceData.get(2)));
+        vote.setVoteNumber(safeParseToLong(sourceData.get(3)));
+        vote.setPointNumber(safeParseToLong(sourceData.get(4)));
+        vote.setDate(safeParseToLocalDate(sourceData.get(5)));
+        vote.setTime(safeParseToLocalTime(sourceData.get(6)));
+        vote.setAye(safeParseToInteger(sourceData.get(7)));
+        vote.setNo(safeParseToInteger(sourceData.get(8)));
+        vote.setAbstained(safeParseToInteger(sourceData.get(9)));
+        vote.setWasNotOnVote(safeParseToInteger(sourceData.get(10)));
+        vote.setLoggedIn(safeParseToInteger(sourceData.get(11)));
+        vote.setQuorum(safeParseToInteger(sourceData.get(12)));
+        vote.setType(sourceData.get(13));
+        vote.setResult(sourceData.get(14));
+        vote.setLongName(sourceData.get(15));
+        vote.setShortName(sourceData.get(16));
+
+        return vote;
     }
 
     @Override

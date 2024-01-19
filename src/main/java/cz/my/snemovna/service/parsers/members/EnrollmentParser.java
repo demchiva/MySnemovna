@@ -25,16 +25,18 @@ public class EnrollmentParser extends AbstractSourceParser<Enrollment> {
     }
 
     @Override
-    protected Object[] convert(List<String> sourceData) {
-        return new Object[] {
-                Long.parseLong(sourceData.get(0)),
-                safeParseToLong(sourceData.get(1)),
-                safeParseToInteger(sourceData.get(2)),
-                sourceData.get(3),
-                sourceData.get(4),
-                safeParseToLocalDate(sourceData.get(5)),
-                safeParseToLocalDate(sourceData.get(6))
-        };
+    protected Enrollment convert(List<String> sourceData) {
+        Enrollment enrollment = new Enrollment();
+
+        enrollment.setId(Long.parseLong(sourceData.get(0)));
+        enrollment.setMembershipOrFunctionId(safeParseToLong(sourceData.get(1)));
+        enrollment.setMembershipOrFunction(safeParseToInteger(sourceData.get(2)));
+        enrollment.setEnrollmentFrom(sourceData.get(3));
+        enrollment.setEnrollmentTo(sourceData.get(4));
+        enrollment.setMandateFrom(safeParseToLocalDate(sourceData.get(5)));
+        enrollment.setMandateTo(safeParseToLocalDate(sourceData.get(6)));
+
+        return enrollment;
     }
 
     @Override

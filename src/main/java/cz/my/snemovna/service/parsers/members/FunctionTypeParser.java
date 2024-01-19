@@ -25,15 +25,17 @@ public class FunctionTypeParser extends AbstractSourceParser<FunctionType> {
     }
 
     @Override
-    protected Object[] convert(List<String> data) {
-        return new Object[] {
-                Long.parseLong(data.get(0)),
-                safeParseToLong(data.get(1)),
-                data.get(2),
-                data.get(3),
-                safeParseToInteger(data.get(4)),
-                safeParseToLong(data.get(5))
-        };
+    protected FunctionType convert(List<String> data) {
+        final FunctionType functionType = new FunctionType();
+
+        functionType.setId(Long.parseLong(data.get(0)));
+        functionType.setOrganTypeId(safeParseToLong(data.get(1)));
+        functionType.setNameCz(data.get(2));
+        functionType.setNameEn(data.get(3));
+        functionType.setPriority(safeParseToInteger(data.get(4)));
+        functionType.setCommonType(safeParseToLong(data.get(5)));
+
+        return functionType;
     }
 
     @Override

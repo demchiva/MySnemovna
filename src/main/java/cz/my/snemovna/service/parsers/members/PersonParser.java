@@ -25,18 +25,20 @@ public class PersonParser extends AbstractSourceParser<Person> {
     }
 
     @Override
-    protected Object[] convert(List<String> sourceData) {
-        return new Object[] {
-                Long.parseLong(sourceData.get(0)),
-                sourceData.get(1),
-                sourceData.get(2),
-                sourceData.get(3),
-                sourceData.get(4),
-                safeParseToLocalDate(sourceData.get(5)),
-                sourceData.get(6),
-                safeParseToLocalDate(sourceData.get(7)),
-                safeParseToLocalDate(sourceData.get(8))
-        };
+    protected Person convert(List<String> sourceData) {
+        final Person person = new Person();
+
+        person.setId(Long.parseLong(sourceData.get(0)));
+        person.setTitleBeforeName(sourceData.get(1));
+        person.setFirstName(sourceData.get(2));
+        person.setLastName(sourceData.get(3));
+        person.setTitleAfterName(sourceData.get(4));
+        person.setBirthdate(safeParseToLocalDate(sourceData.get(5)));
+        person.setSex(sourceData.get(6));
+        person.setUpdatedAt(safeParseToLocalDate(sourceData.get(7)));
+        person.setDateOfDeath(safeParseToLocalDate(sourceData.get(8)));
+
+        return person;
     }
 
     @Override

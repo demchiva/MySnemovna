@@ -26,24 +26,26 @@ public class ParliamentMemberParser extends AbstractSourceParser<ParliamentMembe
     }
 
     @Override
-    protected Object[] convert(List<String> sourceData) {
-        return new Object[] {
-                Long.parseLong(sourceData.get(0)),
-                safeParseToLong(sourceData.get(1)),
-                safeParseToLong(sourceData.get(2)),
-                safeParseToLong(sourceData.get(3)),
-                safeParseToLong(sourceData.get(4)),
-                sourceData.get(5),
-                sourceData.get(6),
-                sourceData.get(7),
-                sourceData.get(8),
-                sourceData.get(9),
-                sourceData.get(10),
-                sourceData.get(11),
-                sourceData.get(12),
-                sourceData.get(13),
-                safeParseToBool(sourceData.get(14))
-        };
+    protected ParliamentMember convert(List<String> sourceData) {
+        final ParliamentMember parliamentMember = new ParliamentMember();
+
+        parliamentMember.setId(Long.parseLong(sourceData.get(0)));
+        parliamentMember.setPersonId(safeParseToLong(sourceData.get(1)));
+        parliamentMember.setRegionId(safeParseToLong(sourceData.get(2)));
+        parliamentMember.setPartyId(safeParseToLong(sourceData.get(3)));
+        parliamentMember.setPeriodId(safeParseToLong(sourceData.get(4)));
+        parliamentMember.setWeb(sourceData.get(5));
+        parliamentMember.setStreet(sourceData.get(6));
+        parliamentMember.setMunicipality(sourceData.get(7));
+        parliamentMember.setZip(sourceData.get(8));
+        parliamentMember.setEmail(sourceData.get(9));
+        parliamentMember.setPhone(sourceData.get(10));
+        parliamentMember.setFax(sourceData.get(11));
+        parliamentMember.setPspPhone(sourceData.get(12));
+        parliamentMember.setFacebook(sourceData.get(13));
+        parliamentMember.setPhoto(safeParseToBool(sourceData.get(14)));
+
+        return parliamentMember;
     }
 
     @Override

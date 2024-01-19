@@ -25,14 +25,16 @@ public class FunctionParser extends AbstractSourceParser<Function> {
     }
 
     @Override
-    protected Object[] convert(List<String> sourceData) {
-        return new Object[] {
-                Long.parseLong(sourceData.get(0)),
-                safeParseToLong(sourceData.get(1)),
-                safeParseToLong(sourceData.get(2)),
-                sourceData.get(3),
-                safeParseToInteger(sourceData.get(4))
-        };
+    protected Function convert(List<String> sourceData) {
+        final Function function = new Function();
+
+        function.setId(Long.parseLong(sourceData.get(0)));
+        function.setOrganId(Long.parseLong(sourceData.get(1)));
+        function.setFunctionTypeId(Long.parseLong(sourceData.get(2)));
+        function.setNameCz(sourceData.get(3));
+        function.setPriority(safeParseToInteger(sourceData.get(4)));
+
+        return function;
     }
 
     @Override

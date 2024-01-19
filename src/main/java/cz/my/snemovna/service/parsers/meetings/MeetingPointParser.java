@@ -26,26 +26,29 @@ public class MeetingPointParser extends AbstractSourceParser<MeetingPoint> {
     }
 
     @Override
-    protected Object[] convert(List<String> sourceData) {
+    protected MeetingPoint convert(List<String> sourceData) {
+        final MeetingPoint meetingPoint = new MeetingPoint();
+
         Integer agendaType = safeParseToInteger(sourceData.get(9));
         agendaType = agendaType == null ? 0 : agendaType;
-        return new Object[] {
-                Long.parseLong(sourceData.get(0)),
-                agendaType,
-                safeParseToLong(sourceData.get(1)),
-                safeParseToLong(sourceData.get(2)),
-                safeParseToInteger(sourceData.get(3)),
-                safeParseToLong(sourceData.get(4)),
-                sourceData.get(5),
-                sourceData.get(6),
-                sourceData.get(7),
-                safeParseToLong(sourceData.get(8)),
-                safeParseToLong(sourceData.get(10)),
-                sourceData.get(11),
-                safeParseToInteger(sourceData.get(12)),
-                safeParseToLong(sourceData.get(13)),
-                sourceData.get(14)
-        };
+
+        meetingPoint.setId(Long.parseLong(sourceData.get(0)));
+        meetingPoint.setAgendaType(agendaType);
+        meetingPoint.setPointId(safeParseToLong(sourceData.get(1)));
+        meetingPoint.setMeetingId(safeParseToLong(sourceData.get(2)));
+        meetingPoint.setTypeId(safeParseToInteger(sourceData.get(3)));
+        meetingPoint.setPointNumber(safeParseToLong(sourceData.get(4)));
+        meetingPoint.setFullName(sourceData.get(5));
+        meetingPoint.setNameSuffix(sourceData.get(6));
+        meetingPoint.setNote(sourceData.get(7));
+        meetingPoint.setStateId(safeParseToLong(sourceData.get(8)));
+        meetingPoint.setMode(safeParseToLong(sourceData.get(10)));
+        meetingPoint.setShortNote(sourceData.get(11));
+        meetingPoint.setType(safeParseToInteger(sourceData.get(12)));
+        meetingPoint.setDocumentId(safeParseToLong(sourceData.get(13)));
+        meetingPoint.setShortName(sourceData.get(14));
+
+        return meetingPoint;
     }
 
     @Override

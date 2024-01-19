@@ -25,13 +25,15 @@ public class RegionalOfficeParser extends AbstractSourceParser<RegionalOffice> {
     }
 
     @Override
-    protected Object[] convert(List<String> sourceData) {
-        return new Object[] {
-                Long.parseLong(sourceData.get(0)),
-                sourceData.get(1),
-                sourceData.get(2),
-                sourceData.get(3)
-        };
+    protected RegionalOffice convert(List<String> sourceData) {
+        final RegionalOffice regionalOffice = new RegionalOffice();
+
+        regionalOffice.setMemberId(Long.parseLong(sourceData.get(0)));
+        regionalOffice.setAddress(sourceData.get(1));
+        regionalOffice.setLatitude(sourceData.get(2));
+        regionalOffice.setLongitude(sourceData.get(3));
+
+        return regionalOffice;
     }
 
     @Override

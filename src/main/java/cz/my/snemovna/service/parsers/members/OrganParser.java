@@ -25,19 +25,21 @@ public class OrganParser extends AbstractSourceParser<Organ> {
     }
 
     @Override
-    protected Object[] convert(List<String> sourceData) {
-        return new Object[] {
-                Long.parseLong(sourceData.get(0)),
-                safeParseToLong(sourceData.get(1)),
-                safeParseToLong(sourceData.get(2)),
-                sourceData.get(3),
-                sourceData.get(4),
-                sourceData.get(5),
-                safeParseToLocalDate(sourceData.get(6)),
-                safeParseToLocalDate(sourceData.get(7)),
-                safeParseToInteger(sourceData.get(8)),
-                safeParseToInteger(sourceData.get(9))
-        };
+    protected Organ convert(List<String> sourceData) {
+        final Organ organ = new Organ();
+
+        organ.setId(Long.parseLong(sourceData.get(0)));
+        organ.setParentId(safeParseToLong(sourceData.get(1)));
+        organ.setOrganTypeId(safeParseToLong(sourceData.get(2)));
+        organ.setShortName(sourceData.get(3));
+        organ.setNameCz(sourceData.get(4));
+        organ.setNameEn(sourceData.get(5));
+        organ.setDateFrom(safeParseToLocalDate(sourceData.get(6)));
+        organ.setDateTo(safeParseToLocalDate(sourceData.get(7)));
+        organ.setPriority(safeParseToInteger(sourceData.get(8)));
+        organ.setClOrganBase(safeParseToInteger(sourceData.get(9)));
+
+        return organ;
     }
 
     @Override

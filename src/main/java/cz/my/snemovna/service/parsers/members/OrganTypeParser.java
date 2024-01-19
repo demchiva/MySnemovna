@@ -25,15 +25,17 @@ public class OrganTypeParser extends AbstractSourceParser<OrganType> {
     }
 
     @Override
-    protected Object[] convert(List<String> data) {
-        return new Object[] {
-                Long.parseLong(data.get(0)),
-                safeParseToLong(data.get(1)),
-                data.get(2),
-                data.get(3),
-                safeParseToLong(data.get(4)),
-                safeParseToInteger(data.get(5))
-        };
+    protected OrganType convert(List<String> data) {
+        final OrganType organType = new OrganType();
+
+        organType.setId(Long.parseLong(data.get(0)));
+        organType.setParentId(safeParseToLong(data.get(1)));
+        organType.setNameCz(data.get(2));
+        organType.setNameEn(data.get(3));
+        organType.setCommonType(safeParseToLong(data.get(4)));
+        organType.setPriority(safeParseToInteger(data.get(5)));
+
+        return organType;
     }
 
     @Override
