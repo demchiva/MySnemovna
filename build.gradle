@@ -41,6 +41,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-quartz'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.hibernate.validator:hibernate-validator'
 	implementation 'org.flywaydb:flyway-core:9.15.1'
@@ -48,6 +50,10 @@ dependencies {
 	implementation 'org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.0_spec:1.0.1.Final'
 	implementation 'io.swagger.core.v3:swagger-annotations:2.2.8'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
+
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
