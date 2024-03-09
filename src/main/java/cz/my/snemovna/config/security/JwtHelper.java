@@ -19,6 +19,7 @@ import java.util.function.Function;
  * It contains methods for generating, parsing, and validating JWT tokens.
  */
 @Component
+@SuppressWarnings("unused")
 public class JwtHelper {
     @Value("${application.security.jwt.secretKey}")
     private String secretKey;
@@ -53,21 +54,24 @@ public class JwtHelper {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return validateToken(token, userDetails.getUsername());
     }
 
-    public String generateToken(final String username) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
+    public Boolean validateToken(String token, String username) {
+        final String tokenUsername = extractUsername(token);
+        return (tokenUsername.equals(username) && !isTokenExpired(token));
     }
 
-    private String createToken(Map<String, Object> claims, String username) {
+    public String generateJwtToken(final String username) {
+        return createToken(new HashMap<>(), username, jwtExpiration);
+    }
+
+    private String createToken(Map<String, Object> claims, String username, long expiration) {
         return Jwts.builder()
                 .claims()
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                .expiration(new Date(System.currentTimeMillis() + expiration))
                 .add(claims)
                 .and()
                 .signWith(getSignKey(), Jwts.SIG.HS256)
@@ -77,5 +81,9 @@ public class JwtHelper {
     private SecretKey getSignKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public String generateRefreshToken(final String username) {
+        return createToken(new HashMap<>(), username, refreshExpiration);
     }
 }
