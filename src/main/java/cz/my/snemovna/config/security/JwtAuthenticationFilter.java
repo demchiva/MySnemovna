@@ -35,12 +35,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = null;
         String username = null;
 
-        if(authHeader != null && authHeader.startsWith(BEARER_TOKEN_NAME)){
+        if(authHeader != null && authHeader.startsWith(BEARER_TOKEN_NAME)) {
             token = authHeader.substring(BEARER_TOKEN_NAME.length());
             username = jwtHelper.extractUsername(token);
         }
 
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
+        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if(jwtHelper.validateToken(token, userDetails)) {
                 // TODO why not JwtAuthenticationToken?
