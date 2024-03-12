@@ -1,0 +1,2 @@
+-- Read for DB init https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.data-initialization
+insert into users (id, first_name, last_name, email, password, role) values (1, 'Admin', 'Adminuous', 'admin@mysnemovna.cz', '$2a$10$kV9mcu7qkGQlmmKafc0emetXKlrOCqWbyxRNIPh2ZzIH8nkfiiXUK', 'ADMIN');

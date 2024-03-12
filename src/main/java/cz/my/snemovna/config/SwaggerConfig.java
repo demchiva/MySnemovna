@@ -5,6 +5,9 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,7 +33,22 @@ public class SwaggerConfig {
                         .license(new License().name("Ivan Demchenko")))
                 .externalDocs(new ExternalDocumentation()
                         .description("Data source")
-                        .url("https://www.psp.cz/sqw/hp.sqw")
-                );
+                        .url("https://www.psp.cz/sqw/hp.sqw"))
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
+                .addServersItem(new Server().url("http://localhost:8085").description("Local ENV"))
+                .addServersItem(new Server().url("https://my-snemovna.herokuapp.com").description("PROD ENV"));
+    }
+
+    /**
+     * The SecurityScheme bean configuration.
+     */
+    @Bean
+    public SecurityScheme securityScheme() {
+        return new SecurityScheme()
+                .type(SecurityScheme.Type.HTTP)
+                .name("bearerAuth")
+                .scheme("bearer")
+                .bearerFormat("JWT")
+                .in(SecurityScheme.In.HEADER);
     }
 }
