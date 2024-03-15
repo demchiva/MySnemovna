@@ -4,6 +4,7 @@ import cz.my.snemovna.dto.meetings.MeetingAgendaType;
 import cz.my.snemovna.dto.meetings.MeetingDetailDto;
 import cz.my.snemovna.dto.meetings.MeetingDto;
 import cz.my.snemovna.jpa.model.meetings.MeetingPoint;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,7 +18,7 @@ public interface IMeetingsService {
      * @param page the page
      * @return the meetings page.
      */
-    Page<MeetingDto> getMeetings(Pageable page);
+    Page<MeetingDto> getMeetings(@NotNull Pageable page);
 
     /**
      * The method get meeting detail.
