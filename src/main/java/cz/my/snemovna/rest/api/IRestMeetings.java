@@ -6,6 +6,8 @@ import cz.my.snemovna.dto.meetings.MeetingDto;
 import cz.my.snemovna.rest.PageApiRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
@@ -34,7 +36,7 @@ public interface IRestMeetings {
     @Operation(summary = "Get the meetings for meetings listing")
     @GET
     @Path("/")
-    Page<MeetingDto> getMeetings(@ParameterObject PageApiRequest page);
+    Page<MeetingDto> getMeetings(@ParameterObject @Valid PageApiRequest page);
 
     /**
      * Get meeting detail.
@@ -44,5 +46,5 @@ public interface IRestMeetings {
     @Operation(summary = "Get meeting detail.")
     @GET
     @Path("/{meetingId}")
-    MeetingDetailDto getMeeting(@PathParam("meetingId") Long meetingId, @QueryParam("type") MeetingAgendaType type);
+    MeetingDetailDto getMeeting(@PathParam("meetingId") @NotNull Long meetingId, @QueryParam("type") @NotNull MeetingAgendaType type);
 }

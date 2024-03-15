@@ -7,6 +7,8 @@ import cz.my.snemovna.rest.PageApiRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Nullable;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
@@ -37,7 +39,7 @@ public interface IRestMembers {
     @Operation(summary = "Get the members for members listing.")
     @GET
     @Path("/")
-    Page<MemberDto> getMembers(@QueryParam("search") @Nullable String search, @ParameterObject PageApiRequest page);
+    Page<MemberDto> getMembers(@QueryParam("search") @Nullable String search, @ParameterObject @Valid PageApiRequest page);
 
     /**
      * Get member detail.
@@ -47,7 +49,7 @@ public interface IRestMembers {
     @Operation(summary = "Get member detail.")
     @GET
     @Path("/{memberId}")
-    MemberDetailDto getMember(@PathParam("memberId") Long memberId);
+    MemberDetailDto getMember(@PathParam("memberId") @NotNull Long memberId);
 
     /**
      * Get info how given member of parliament voted.
@@ -57,5 +59,5 @@ public interface IRestMembers {
     @Operation(summary = "Get info how given member of parliament voted.")
     @GET
     @Path("/{memberId}/votes")
-    List<MemberVotesDto> getVotes(@PathParam("memberId") Long memberId);
+    List<MemberVotesDto> getVotes(@PathParam("memberId") @NotNull Long memberId);
 }

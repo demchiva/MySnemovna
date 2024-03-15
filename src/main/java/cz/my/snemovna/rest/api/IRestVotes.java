@@ -6,6 +6,8 @@ import cz.my.snemovna.dto.votes.VoteMembersDto;
 import cz.my.snemovna.rest.PageApiRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
@@ -34,7 +36,7 @@ public interface IRestVotes {
     @Operation(summary = "Get the votes for votes listing.")
     @GET
     @Path("/")
-    Page<VoteDto> getVotes(@ParameterObject PageApiRequest page);
+    Page<VoteDto> getVotes(@ParameterObject @Valid PageApiRequest page);
 
     /**
      * Get vote detail.
@@ -44,7 +46,7 @@ public interface IRestVotes {
     @Operation(summary = "Get vote detail.")
     @GET
     @Path("/{voteId}")
-    VoteDetailDto getVote(@PathParam("voteId") Long voteId);
+    VoteDetailDto getVote(@PathParam("voteId") @NotNull Long voteId);
 
     /**
      * Get info how members of parliament voted in the given vote.
@@ -54,5 +56,5 @@ public interface IRestVotes {
     @Operation(summary = "Get info how members of parliament voted in the given vote.")
     @GET
     @Path("/{voteId}/members")
-    List<VoteMembersDto> getMembers(@PathParam("voteId") Long voteId);
+    List<VoteMembersDto> getMembers(@PathParam("voteId") @NotNull Long voteId);
 }

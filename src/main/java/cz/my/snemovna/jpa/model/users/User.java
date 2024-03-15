@@ -20,7 +20,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "sn_users")
 public class User implements UserDetails {
 
     @Id
