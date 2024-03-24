@@ -3,6 +3,7 @@ package cz.my.snemovna.rest;
 import cz.my.snemovna.dto.auth.AuthenticationRequest;
 import cz.my.snemovna.dto.auth.AuthenticationResponse;
 import cz.my.snemovna.dto.auth.RefreshTokenRequest;
+import cz.my.snemovna.dto.auth.RegisterRequest;
 import cz.my.snemovna.service.auth.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestAuthentication {
 
     private final AuthenticationService authenticationService;
+
+    @PostMapping("/register")
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
+        return ResponseEntity.ok(authenticationService.register(request));
+    }
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
