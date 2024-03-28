@@ -11,11 +11,21 @@ import java.util.stream.Collectors;
 
 import static cz.my.snemovna.jpa.model.users.Permission.*;
 
+/**
+ * The application user roles.
+ */
 @Getter
 @RequiredArgsConstructor
 public enum Role {
 
+    /**
+     * The normal user role.
+     */
     USER(Collections.emptySet()),
+
+    /**
+     * The admin role. Admin has all permissions.
+     */
     ADMIN(
             Set.of(
                     ADMIN_READ,

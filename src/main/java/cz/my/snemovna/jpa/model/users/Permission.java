@@ -3,6 +3,9 @@ package cz.my.snemovna.jpa.model.users;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * The application user permissions.
+ */
 @Getter
 @RequiredArgsConstructor
 public enum Permission {

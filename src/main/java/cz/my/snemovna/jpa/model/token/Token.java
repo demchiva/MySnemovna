@@ -15,6 +15,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * The access token entity object.
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -40,6 +43,4 @@ public class Token {
     public boolean revoked;
 
     public boolean expired;
-
-
 }

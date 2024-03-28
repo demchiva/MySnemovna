@@ -1,17 +1,22 @@
 package cz.my.snemovna.dto.auth;
 
+import cz.my.snemovna.jpa.model.users.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
+/**
+ * Register request dto.
+ */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationRequest implements Serializable {
+public class RegisterRequestDto {
+    private String firstName;
+    private String lastName;
     private String username;
     private String password;
+    private Role role;
 }

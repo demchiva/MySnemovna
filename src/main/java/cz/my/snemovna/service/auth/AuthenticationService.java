@@ -1,10 +1,10 @@
 package cz.my.snemovna.service.auth;
 
 import cz.my.snemovna.config.security.JwtHelper;
-import cz.my.snemovna.dto.auth.AuthenticationRequest;
-import cz.my.snemovna.dto.auth.AuthenticationResponse;
-import cz.my.snemovna.dto.auth.RefreshTokenRequest;
-import cz.my.snemovna.dto.auth.RegisterRequest;
+import cz.my.snemovna.dto.auth.AuthenticationRequestDto;
+import cz.my.snemovna.dto.auth.AuthenticationResponseDto;
+import cz.my.snemovna.dto.auth.RefreshTokenRequestDto;
+import cz.my.snemovna.dto.auth.RegisterRequestDto;
 import cz.my.snemovna.jpa.model.token.Token;
 import cz.my.snemovna.jpa.model.token.TokenType;
 import cz.my.snemovna.jpa.model.users.User;
@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+/**
+ * The service class for manage authentication.
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -31,7 +35,13 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
 
-    public AuthenticationResponse authenticate(final AuthenticationRequest request) {
+    /**
+     * The method authenticates user. If given in request credentials are invalid, the method throws {@link AuthenticationException}.
+     * Otherwise, the method generates JWT token and refresh token.
+     * @param request the authentication request.
+     * @return authentication user access data.
+     */
+    public AuthenticationResponseDto authenticate(final AuthenticationRequestDto request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
@@ -45,7 +55,7 @@ public class AuthenticationService {
 
         final User user = userRepository.findByEmail(userDetails.getUsername()).orElseThrow();
         revokeAllUserTokens(user);
-        return AuthenticationResponse.builder()
+        return AuthenticationResponseDto.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -77,7 +87,13 @@ public class AuthenticationService {
         tokenRepository.save(token);
     }
 
-    public AuthenticationResponse refreshToken(final RefreshTokenRequest request) {
+    /**
+     * The method creates new access token by refresh token.
+     * If refresh token is invalid, the method throws {@link ResponseStatusException}.
+     * @param request the authentication request.
+     * @return authentication user access data.
+     */
+    public AuthenticationResponseDto refreshToken(final RefreshTokenRequestDto request) {
         final String refreshToken = request.getRefreshToken();
 
         final String usernameFromToken = jwtHelper.extractUsername(refreshToken);
@@ -93,13 +109,18 @@ public class AuthenticationService {
         revokeAllUserTokens(user);
         saveUserToken(user, accessToken);
 
-        return AuthenticationResponse.builder()
+        return AuthenticationResponseDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
     }
 
-    public AuthenticationResponse register(final RegisterRequest request) {
+    /**
+     * The method creates new user account with email and password.
+     * @param request the authentication request.
+     * @return authentication user access data.
+     */
+    public AuthenticationResponseDto register(final RegisterRequestDto request) {
         final User user = User.builder()
                 .firstname(request.getFirstName())
                 .lastname(request.getLastName())
@@ -114,7 +135,7 @@ public class AuthenticationService {
         final User savedUser = userRepository.save(user);
         saveUserToken(savedUser, jwtToken);
         
-        return AuthenticationResponse.builder()
+        return AuthenticationResponseDto.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();

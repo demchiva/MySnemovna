@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * The access tokens repository.
+ */
 public interface TokenRepository extends JpaRepository<Token, Integer> {
 
     // TODO: Change query to SQL builder.

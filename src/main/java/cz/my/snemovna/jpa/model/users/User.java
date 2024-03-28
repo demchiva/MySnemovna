@@ -17,6 +17,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+/**
+ * The application user entity. There is app layers mixin,
+ * because this user is business application user and also security application user.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -39,6 +43,9 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
+    /**
+     * Password is encrypted. See {@link cz.my.snemovna.config.security.SecurityConfig#passwordEncoder()}.
+     */
     @Column(name = "password")
     private String password;
 
